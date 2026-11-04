@@ -1,0 +1,145 @@
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { readdirSync, readFileSync, realpathSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+
+interface PackageLicense {
+  name: string;
+  versions: string[];
+  paths: string[];
+  license: string;
+}
+
+// Exact SPDX identifiers only: new licenses and expressions require explicit review.
+const allowed = new Set([
+  'MIT',
+  'ISC',
+  'BSD-2-Clause',
+  'BSD-3-Clause',
+  'Apache-2.0',
+  'OFL-1.1',
+  'BSL-1.0'
+]);
+
+export function assertAllowed(license: string, name: string): void {
+  if (!allowed.has(license)) throw new Error(`Unapproved production license: ${name}: ${license}`);
+}
+
+function licenseText(directory: string, name: string, version: string): string {
+  const files = readdirSync(directory, { withFileTypes: true })
+    .filter(
+      (file) =>
+        file.isFile() &&
+        /^((third[-_]party[-_])?(licen[sc]es?|notices?)|copying|ofl)([.-]|$)/i.test(file.name)
+    )
+    .map((file) => file.name)
+    .sort();
+  if (!files.some((file) => /^(licen[sc]e|copying|ofl)([.-]|$)/i.test(file))) {
+    // Published tarball omits LICENSE. Source for the committed, version-pinned copy:
+    // https://github.com/drizzle-team/drizzle-orm/blob/0.45.2/LICENSE
+    if (name !== 'drizzle-orm' || version !== '0.45.2') {
+      throw new Error(`Missing license text for ${name}@${version}`);
+    }
+    return readFileSync(new URL('./drizzle-orm-0.45.2.LICENSE', import.meta.url), 'utf8').trim();
+  }
+  return files
+    .map((file) => `${file}\n\n${readFileSync(join(directory, file), 'utf8').trim()}`)
+    .join('\n\n');
+}
+
+function section(directory: string, name: string, version: string, license: string): string {
+  return `${name}@${version}\nLicense: ${license}\n\n${licenseText(directory, name, version)}`;
+}
+
+// Bundlers inline their own runtime helpers (module runtime, preload polyfill, export shims) into
+// what we ship, and those tools are dev dependencies the production inventory misses. Each build
+// command therefore names whose code it inlines; an unmapped command fails until it is reviewed.
+// tsc targets ES2024 and emits no helpers.
+const inlinedBuildRuntime: Readonly<Record<string, readonly { via: string; name?: string }[]>> = {
+  'vite build': [{ via: 'vite' }, { via: 'vite', name: 'rolldown' }],
+  tsup: [{ via: 'tsup', name: 'esbuild' }],
+  'tsc -p tsconfig.json': []
+};
+
+export function inlinedRuntimeFor(command: string): readonly { via: string; name?: string }[] {
+  const credits = inlinedBuildRuntime[command];
+  if (!credits) throw new Error(`Unreviewed build command: ${command}`);
+  return credits;
+}
+
+function bundledBuildTools(root: string): string[] {
+  const directories = new Set<string>();
+  for (const parent of ['apps', 'packages']) {
+    for (const workspace of readdirSync(join(root, parent))) {
+      const directory = join(root, parent, workspace);
+      const manifest = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as {
+        scripts?: { build?: string };
+      };
+      if (!manifest.scripts?.build) continue;
+      for (const { via, name } of inlinedRuntimeFor(manifest.scripts.build)) {
+        const tool = realpathSync(join(directory, 'node_modules', via));
+        directories.add(name ? join(dirname(tool), name) : tool);
+      }
+    }
+  }
+  return [...directories].sort().map((directory) => {
+    const manifest = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as {
+      name: string;
+      version: string;
+      license: string;
+    };
+    assertAllowed(manifest.license, manifest.name);
+    return section(directory, manifest.name, manifest.version, manifest.license);
+  });
+}
+
+export function renderNotices(root: string): string {
+  const inventory = JSON.parse(
+    execFileSync('pnpm', ['licenses', 'list', '--prod', '--json'], {
+      cwd: root,
+      encoding: 'utf8',
+      maxBuffer: 16 * 1024 * 1024
+    })
+  ) as Record<string, PackageLicense[]>;
+  const packages = Object.values(inventory)
+    .flat()
+    .sort((a, b) =>
+      `${a.name}@${a.versions.join(',')}`.localeCompare(`${b.name}@${b.versions.join(',')}`, 'en')
+    );
+  if (!packages.length)
+    throw new Error('Empty production license inventory; install dependencies first');
+  const sections = packages.flatMap((pkg) => {
+    assertAllowed(pkg.license, pkg.name);
+    return pkg.versions.map((version) => {
+      const directory = pkg.paths.find((path) => {
+        const manifest = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8')) as {
+          version: string;
+        };
+        return manifest.version === version;
+      });
+      if (!directory) throw new Error(`Missing installed package ${pkg.name}@${version}`);
+      return section(directory, pkg.name, version, pkg.license);
+    });
+  });
+  const fingerprint = createHash('sha256')
+    .update(readFileSync(join(root, 'pnpm-lock.yaml')))
+    .digest('hex');
+  return [
+    'THIRD-PARTY NOTICES',
+    'Generated by pnpm licenses:generate. Do not edit by hand.',
+    `pnpm-lock.yaml SHA-256: ${fingerprint}`,
+    '',
+    'Production workspace dependencies, including bundled CLI dependencies and web fonts.',
+    'Other development tools are excluded, except build tools whose runtime code is bundled.',
+    'The Node/Debian base image retains its own notices',
+    'in /usr/local/LICENSE and /usr/share/doc/*/copyright.',
+    '',
+    ...[...sections, ...bundledBuildTools(root)].map((section) => `${'='.repeat(78)}\n${section}`),
+    ''
+  ].join('\n');
+}
+
+export function assertCurrent(actual: string, expected: string): void {
+  if (actual !== expected)
+    throw new Error('THIRD_PARTY_NOTICES is stale. Run pnpm licenses:generate.');
+}

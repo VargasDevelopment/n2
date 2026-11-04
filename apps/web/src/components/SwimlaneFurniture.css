@@ -1,0 +1,128 @@
+.swimlane-band {
+  position: absolute;
+  left: 0;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 12%, transparent);
+  border-radius: var(--radius-panel);
+  background: color-mix(in srgb, var(--color-surface) 28%, transparent);
+}
+
+.swimlane-band:nth-of-type(even) {
+  background: color-mix(in srgb, var(--color-surface-tinted) 32%, transparent);
+}
+
+.swimlane-band[data-swimlane-kind='scope'] {
+  border-color: color-mix(in srgb, var(--color-accent-secondary) 15%, transparent);
+}
+
+.swimlane-band[data-swimlane-kind='outside'] {
+  border-style: dashed;
+  border-color: var(--color-border);
+}
+
+.swimlane-band[data-swimlane-kind='unscoped'] {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--color-accent-secondary) 15%, transparent);
+}
+
+.swimlane-band[data-swimlane-kind='notes'] {
+  border-color: color-mix(in srgb, var(--color-note) 17%, transparent);
+  background: color-mix(in srgb, var(--color-note-surface) 20%, transparent);
+}
+
+.swimlane-band > header {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 156px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font: var(--font-size-micro) var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.swimlane-band > header strong {
+  overflow: hidden;
+  font: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.swimlane-band > header span {
+  flex: 0 0 auto;
+  color: var(--color-text-faint);
+}
+
+.swimlane-reference {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  overflow: hidden;
+  border: 1px dashed color-mix(in srgb, var(--color-accent) 40%, transparent);
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  background: color-mix(in srgb, var(--color-surface-tinted) 74%, transparent);
+  font: var(--font-size-micro) var(--font-mono);
+}
+
+.swimlane-reference span {
+  color: var(--color-accent-text);
+}
+
+.swimlane-reference small,
+.swimlane-reference__caption small {
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+  font: inherit;
+}
+
+.swimlane-reference strong {
+  overflow: hidden;
+  font: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.swimlane-reference[data-has-caption='true'] {
+  padding: 0;
+  border-style: solid;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-planning-placement) 50%, transparent);
+}
+
+.swimlane-reference[data-placement-kind='milestone'] {
+  border-radius: 3px;
+  transform: rotate(45deg);
+  background: var(--color-milestone);
+}
+
+.swimlane-reference__caption {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 20px;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font: var(--font-size-micro) var(--font-mono);
+}
+
+.swimlane-reference__caption[data-caption-alignment='end'] {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.swimlane-reference__caption span {
+  color: var(--color-accent-text);
+}
+
+.swimlane-reference__caption strong {
+  overflow: hidden;
+  font: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,251 @@
+.settings-modal__backdrop {
+  position: fixed;
+  z-index: var(--z-modal);
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--color-backdrop) 74%, transparent);
+  backdrop-filter: blur(12px);
+  animation: settings-backdrop-enter 150ms ease-out;
+}
+
+.settings-modal {
+  width: min(1180px, 100%);
+  height: min(760px, calc(100dvh - 48px));
+  min-height: min(560px, calc(100dvh - 48px));
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sheet);
+  background: var(--color-surface);
+  box-shadow: 0 36px 120px color-mix(in srgb, var(--color-shadow) 62%, transparent);
+  animation: settings-modal-enter 180ms ease-out;
+}
+
+@keyframes settings-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes settings-modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-modal__backdrop,
+  .settings-modal {
+    animation: none;
+  }
+}
+
+.settings-modal__nav {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 18px 20px;
+  border-right: 1px solid color-mix(in srgb, var(--color-contrast) 8%, transparent);
+  background:
+    radial-gradient(
+      circle at 30% 5%,
+      color-mix(in srgb, var(--color-accent-deep) 17%, transparent),
+      transparent 30%
+    ),
+    var(--color-bg-canvas);
+}
+
+.settings-modal__nav > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 22px;
+}
+
+.settings-modal__nav .brand-mark {
+  font-size: var(--font-size-section);
+}
+
+.settings-modal__eyebrow {
+  color: var(--color-text-muted);
+  font: var(--font-size-micro) var(--font-mono);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.settings-modal__nav nav {
+  display: grid;
+  gap: 6px;
+}
+
+.settings-modal__nav nav button {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-card);
+  color: var(--color-text-secondary);
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+}
+
+.settings-modal__nav nav button:hover {
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-contrast) 4%, transparent);
+}
+
+.settings-modal__nav nav button[aria-current='page'] {
+  color: var(--color-accent-text-strong);
+  border-color: color-mix(in srgb, var(--color-accent) 33%, transparent);
+  background: color-mix(in srgb, var(--color-accent-deep) 15%, transparent);
+}
+
+.settings-modal__nav nav button span {
+  font-size: var(--font-size-body);
+  font-weight: 600;
+}
+
+.settings-modal__nav nav button small {
+  overflow: hidden;
+  color: var(--color-text-faint);
+  font-size: var(--font-size-small);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-modal__nav > p {
+  margin: auto 8px 0;
+  color: var(--color-text-faint);
+  font: var(--font-size-micro)/1.55 var(--font-mono);
+}
+
+.settings-modal__content {
+  position: relative;
+  min-width: 0;
+  overflow: auto;
+  padding: 42px 38px;
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      color-mix(in srgb, var(--color-accent-secondary) 4%, transparent),
+      transparent 26%
+    ),
+    var(--color-surface);
+}
+
+.settings-modal__close {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-contrast) 10%, transparent);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  cursor: pointer;
+}
+
+.settings-modal__close:hover {
+  color: var(--color-text);
+  border-color: color-mix(in srgb, var(--color-contrast) 20%, transparent);
+}
+
+.settings-editor {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.95fr) minmax(400px, 1.05fr);
+  gap: 34px;
+  align-items: start;
+}
+
+.settings-editor h2 {
+  margin: 9px 0 0;
+  font: 700 var(--font-size-section)/1.1 var(--font-display);
+  letter-spacing: -0.025em;
+}
+
+.settings-editor__intro {
+  max-width: 540px;
+  margin: 12px 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+
+.settings-modal__nav button:disabled,
+.settings-modal__close:disabled {
+  cursor: wait;
+  opacity: 0.45;
+}
+.settings-modal__state button {
+  padding: 3px 7px;
+  border: 1px solid color-mix(in srgb, var(--color-danger) 34%, transparent);
+  border-radius: var(--radius-control);
+  color: var(--color-danger-text);
+  background: color-mix(in srgb, var(--color-danger) 8%, transparent);
+  cursor: pointer;
+}
+
+.settings-modal__state {
+  min-height: 420px;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.settings-modal__state--error strong {
+  color: var(--color-danger);
+}
+
+.settings-modal__state button {
+  justify-self: center;
+}
+
+@media (max-width: 1180px) {
+  .settings-modal {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+  .settings-editor {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .settings-modal__backdrop {
+    padding: 0;
+  }
+  .settings-modal {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    border: 0;
+    border-radius: 0;
+  }
+  .settings-modal__nav {
+    padding: 12px;
+    border-right: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-contrast) 8%, transparent);
+  }
+  .settings-modal__nav > div,
+  .settings-modal__nav > p {
+    display: none;
+  }
+  .settings-modal__nav nav {
+    display: flex;
+  }
+  .settings-modal__content {
+    padding: 48px 16px 28px;
+  }
+}

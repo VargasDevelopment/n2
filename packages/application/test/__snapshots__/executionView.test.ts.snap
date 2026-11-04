@@ -1,0 +1,764 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`execution projection > preserves the baseline response bytes (archived: false) 1`] = `
+"{
+  "projectId": "project",
+  "tasks": [
+    {
+      "taskId": "enabled",
+      "reference": "PERF-10",
+      "title": "enabled",
+      "eligibility": "enabled",
+      "currentFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enabledFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "active_attempt",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": {
+        "attemptId": "00000000-0000-4000-8000-000000000004",
+        "taskId": "enabled",
+        "workerId": "fixture-worker",
+        "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+        "enablementId": "00000000-0000-4000-8000-000000000001",
+        "inputSnapshot": {
+          "taskId": "enabled",
+          "reference": "PERF-10",
+          "title": "enabled",
+          "description": "Frozen instructions",
+          "dependencies": [],
+          "dependents": []
+        },
+        "state": "active",
+        "progress": null,
+        "claimedAt": "2026-10-15T00:00:00.000Z",
+        "heartbeatAt": "2026-10-15T00:00:00.000Z",
+        "stopRequestedAt": null,
+        "finishedAt": null,
+        "newerInstructionsExist": false,
+        "stopRequested": false
+      },
+      "latestAttempt": {
+        "attemptId": "00000000-0000-4000-8000-000000000004",
+        "taskId": "enabled",
+        "workerId": "fixture-worker",
+        "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+        "enablementId": "00000000-0000-4000-8000-000000000001",
+        "inputSnapshot": {
+          "taskId": "enabled",
+          "reference": "PERF-10",
+          "title": "enabled",
+          "description": "Frozen instructions",
+          "dependencies": [],
+          "dependents": []
+        },
+        "state": "active",
+        "progress": null,
+        "claimedAt": "2026-10-15T00:00:00.000Z",
+        "heartbeatAt": "2026-10-15T00:00:00.000Z",
+        "stopRequestedAt": null,
+        "finishedAt": null,
+        "newerInstructionsExist": false,
+        "stopRequested": false
+      }
+    },
+    {
+      "taskId": "dispatchable",
+      "reference": "PERF-11",
+      "title": "dispatchable",
+      "eligibility": "enabled",
+      "currentFingerprint": "sha256:cddeda6286ec40a8f274630d012ba1e5e171bacf11f2abfd9cf19c2d840d0a5e",
+      "enabledFingerprint": "sha256:cddeda6286ec40a8f274630d012ba1e5e171bacf11f2abfd9cf19c2d840d0a5e",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": null,
+      "dispatchable": true,
+      "claimBlockers": [],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "paused",
+      "reference": "PERF-3",
+      "title": "paused",
+      "eligibility": "off",
+      "currentFingerprint": "sha256:4a882861adaa17a706c2be2c4384c0ad6d0950e5e564c9a52d136f46293258ec",
+      "enabledFingerprint": null,
+      "enablementId": null,
+      "enabledAt": null,
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "disabled",
+          "taskIds": []
+        },
+        {
+          "code": "paused",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "done",
+      "reference": "PERF-4",
+      "title": "done",
+      "eligibility": "off",
+      "currentFingerprint": "sha256:8ba5cff9764cad2ab94c28c2d4ef30893a8338c3ff0332f4003980c67929083c",
+      "enabledFingerprint": null,
+      "enablementId": null,
+      "enabledAt": null,
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "disabled",
+          "taskIds": []
+        },
+        {
+          "code": "done",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "dependent",
+      "reference": "PERF-5",
+      "title": "dependent",
+      "eligibility": "off",
+      "currentFingerprint": "sha256:4228ca33a6f638bc65220b12465ea9af41ddf5c30871c8aecd658cab47c4c610",
+      "enabledFingerprint": null,
+      "enablementId": null,
+      "enabledAt": null,
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "disabled",
+          "taskIds": []
+        },
+        {
+          "code": "unfinished_dependencies",
+          "taskIds": [
+            "outer"
+          ]
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "chained",
+      "reference": "PERF-6",
+      "title": "chained",
+      "eligibility": "enabled",
+      "currentFingerprint": "sha256:b8ee329e66338540d3b83989069718e496c5cf58f4e1cdb6462b99ea8125b489",
+      "enabledFingerprint": "sha256:b8ee329e66338540d3b83989069718e496c5cf58f4e1cdb6462b99ea8125b489",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "unfinished_dependencies",
+          "taskIds": [
+            "dependent"
+          ]
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "disabled",
+      "reference": "PERF-8",
+      "title": "disabled",
+      "eligibility": "off",
+      "currentFingerprint": "sha256:7d181ca8ed6c00f053f0a05259c60b1d43f313dac2e0cae086191f8601539017",
+      "enabledFingerprint": "sha256:7d181ca8ed6c00f053f0a05259c60b1d43f313dac2e0cae086191f8601539017",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": "2026-10-15T00:00:00.000Z",
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "disabled",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "changed",
+      "reference": "PERF-9",
+      "title": "Changed instructions",
+      "eligibility": "instructions_changed",
+      "currentFingerprint": "sha256:79376b58c95630f07f581f3f3215f8fadf8b61a0b3829ac8e9155cf90cd46a70",
+      "enabledFingerprint": "sha256:c66d480b68d37cdb2a9e049e3ab950924d9b1c1a953c4887803241c473c229bd",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "instructions_changed",
+          "taskIds": []
+        },
+        {
+          "code": "active_attempt",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": {
+        "attemptId": "00000000-0000-4000-8000-000000000003",
+        "taskId": "changed",
+        "workerId": "fixture-worker",
+        "claimedFingerprint": "sha256:c66d480b68d37cdb2a9e049e3ab950924d9b1c1a953c4887803241c473c229bd",
+        "enablementId": "00000000-0000-4000-8000-000000000001",
+        "inputSnapshot": {
+          "taskId": "changed",
+          "reference": "PERF-10",
+          "title": "changed",
+          "description": "Frozen instructions",
+          "dependencies": [],
+          "dependents": []
+        },
+        "state": "stop_requested",
+        "progress": null,
+        "claimedAt": "2026-10-15T00:00:00.000Z",
+        "heartbeatAt": "2026-10-15T00:00:00.000Z",
+        "stopRequestedAt": "2026-10-15T00:00:00.000Z",
+        "finishedAt": null,
+        "newerInstructionsExist": true,
+        "stopRequested": true
+      },
+      "latestAttempt": {
+        "attemptId": "00000000-0000-4000-8000-000000000003",
+        "taskId": "changed",
+        "workerId": "fixture-worker",
+        "claimedFingerprint": "sha256:c66d480b68d37cdb2a9e049e3ab950924d9b1c1a953c4887803241c473c229bd",
+        "enablementId": "00000000-0000-4000-8000-000000000001",
+        "inputSnapshot": {
+          "taskId": "changed",
+          "reference": "PERF-10",
+          "title": "changed",
+          "description": "Frozen instructions",
+          "dependencies": [],
+          "dependents": []
+        },
+        "state": "stop_requested",
+        "progress": null,
+        "claimedAt": "2026-10-15T00:00:00.000Z",
+        "heartbeatAt": "2026-10-15T00:00:00.000Z",
+        "stopRequestedAt": "2026-10-15T00:00:00.000Z",
+        "finishedAt": null,
+        "newerInstructionsExist": true,
+        "stopRequested": true
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attemptId": "00000000-0000-4000-8000-000000000002",
+      "taskId": "enabled",
+      "workerId": "fixture-worker",
+      "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "inputSnapshot": {
+        "taskId": "enabled",
+        "reference": "PERF-10",
+        "title": "enabled",
+        "description": "Frozen instructions",
+        "dependencies": [],
+        "dependents": []
+      },
+      "state": "completed",
+      "progress": null,
+      "claimedAt": "2026-10-15T00:00:00.000Z",
+      "heartbeatAt": "2026-10-15T00:00:00.000Z",
+      "stopRequestedAt": null,
+      "finishedAt": "2026-10-15T00:00:00.000Z",
+      "newerInstructionsExist": false,
+      "stopRequested": false
+    },
+    {
+      "attemptId": "00000000-0000-4000-8000-000000000003",
+      "taskId": "changed",
+      "workerId": "fixture-worker",
+      "claimedFingerprint": "sha256:c66d480b68d37cdb2a9e049e3ab950924d9b1c1a953c4887803241c473c229bd",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "inputSnapshot": {
+        "taskId": "changed",
+        "reference": "PERF-10",
+        "title": "changed",
+        "description": "Frozen instructions",
+        "dependencies": [],
+        "dependents": []
+      },
+      "state": "stop_requested",
+      "progress": null,
+      "claimedAt": "2026-10-15T00:00:00.000Z",
+      "heartbeatAt": "2026-10-15T00:00:00.000Z",
+      "stopRequestedAt": "2026-10-15T00:00:00.000Z",
+      "finishedAt": null,
+      "newerInstructionsExist": true,
+      "stopRequested": true
+    },
+    {
+      "attemptId": "00000000-0000-4000-8000-000000000004",
+      "taskId": "enabled",
+      "workerId": "fixture-worker",
+      "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "inputSnapshot": {
+        "taskId": "enabled",
+        "reference": "PERF-10",
+        "title": "enabled",
+        "description": "Frozen instructions",
+        "dependencies": [],
+        "dependents": []
+      },
+      "state": "active",
+      "progress": null,
+      "claimedAt": "2026-10-15T00:00:00.000Z",
+      "heartbeatAt": "2026-10-15T00:00:00.000Z",
+      "stopRequestedAt": null,
+      "finishedAt": null,
+      "newerInstructionsExist": false,
+      "stopRequested": false
+    },
+    {
+      "attemptId": "00000000-0000-4000-8000-000000000005",
+      "taskId": "deleted-task",
+      "workerId": "fixture-worker",
+      "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "inputSnapshot": {
+        "taskId": "deleted-task",
+        "reference": "PERF-10",
+        "title": "deleted-task",
+        "description": "Frozen instructions",
+        "dependencies": [],
+        "dependents": []
+      },
+      "state": "completed",
+      "progress": null,
+      "claimedAt": "2026-10-15T00:00:00.000Z",
+      "heartbeatAt": "2026-10-15T00:00:00.000Z",
+      "stopRequestedAt": null,
+      "finishedAt": "2026-10-15T00:00:00.000Z",
+      "newerInstructionsExist": false,
+      "stopRequested": false
+    }
+  ]
+}"
+`;
+
+exports[`execution projection > preserves the baseline response bytes (archived: true) 1`] = `
+"{
+  "projectId": "project",
+  "tasks": [
+    {
+      "taskId": "enabled",
+      "reference": "PERF-10",
+      "title": "enabled",
+      "eligibility": "enabled",
+      "currentFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enabledFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "active_attempt",
+          "taskIds": []
+        },
+        {
+          "code": "project_archived",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": {
+        "attemptId": "00000000-0000-4000-8000-000000000004",
+        "taskId": "enabled",
+        "workerId": "fixture-worker",
+        "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+        "enablementId": "00000000-0000-4000-8000-000000000001",
+        "inputSnapshot": {
+          "taskId": "enabled",
+          "reference": "PERF-10",
+          "title": "enabled",
+          "description": "Frozen instructions",
+          "dependencies": [],
+          "dependents": []
+        },
+        "state": "active",
+        "progress": null,
+        "claimedAt": "2026-10-15T00:00:00.000Z",
+        "heartbeatAt": "2026-10-15T00:00:00.000Z",
+        "stopRequestedAt": null,
+        "finishedAt": null,
+        "newerInstructionsExist": false,
+        "stopRequested": false
+      },
+      "latestAttempt": {
+        "attemptId": "00000000-0000-4000-8000-000000000004",
+        "taskId": "enabled",
+        "workerId": "fixture-worker",
+        "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+        "enablementId": "00000000-0000-4000-8000-000000000001",
+        "inputSnapshot": {
+          "taskId": "enabled",
+          "reference": "PERF-10",
+          "title": "enabled",
+          "description": "Frozen instructions",
+          "dependencies": [],
+          "dependents": []
+        },
+        "state": "active",
+        "progress": null,
+        "claimedAt": "2026-10-15T00:00:00.000Z",
+        "heartbeatAt": "2026-10-15T00:00:00.000Z",
+        "stopRequestedAt": null,
+        "finishedAt": null,
+        "newerInstructionsExist": false,
+        "stopRequested": false
+      }
+    },
+    {
+      "taskId": "dispatchable",
+      "reference": "PERF-11",
+      "title": "dispatchable",
+      "eligibility": "enabled",
+      "currentFingerprint": "sha256:cddeda6286ec40a8f274630d012ba1e5e171bacf11f2abfd9cf19c2d840d0a5e",
+      "enabledFingerprint": "sha256:cddeda6286ec40a8f274630d012ba1e5e171bacf11f2abfd9cf19c2d840d0a5e",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "project_archived",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "paused",
+      "reference": "PERF-3",
+      "title": "paused",
+      "eligibility": "off",
+      "currentFingerprint": "sha256:4a882861adaa17a706c2be2c4384c0ad6d0950e5e564c9a52d136f46293258ec",
+      "enabledFingerprint": null,
+      "enablementId": null,
+      "enabledAt": null,
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "disabled",
+          "taskIds": []
+        },
+        {
+          "code": "paused",
+          "taskIds": []
+        },
+        {
+          "code": "project_archived",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "done",
+      "reference": "PERF-4",
+      "title": "done",
+      "eligibility": "off",
+      "currentFingerprint": "sha256:8ba5cff9764cad2ab94c28c2d4ef30893a8338c3ff0332f4003980c67929083c",
+      "enabledFingerprint": null,
+      "enablementId": null,
+      "enabledAt": null,
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "disabled",
+          "taskIds": []
+        },
+        {
+          "code": "done",
+          "taskIds": []
+        },
+        {
+          "code": "project_archived",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "dependent",
+      "reference": "PERF-5",
+      "title": "dependent",
+      "eligibility": "off",
+      "currentFingerprint": "sha256:4228ca33a6f638bc65220b12465ea9af41ddf5c30871c8aecd658cab47c4c610",
+      "enabledFingerprint": null,
+      "enablementId": null,
+      "enabledAt": null,
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "disabled",
+          "taskIds": []
+        },
+        {
+          "code": "unfinished_dependencies",
+          "taskIds": [
+            "outer"
+          ]
+        },
+        {
+          "code": "project_archived",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "chained",
+      "reference": "PERF-6",
+      "title": "chained",
+      "eligibility": "enabled",
+      "currentFingerprint": "sha256:b8ee329e66338540d3b83989069718e496c5cf58f4e1cdb6462b99ea8125b489",
+      "enabledFingerprint": "sha256:b8ee329e66338540d3b83989069718e496c5cf58f4e1cdb6462b99ea8125b489",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "unfinished_dependencies",
+          "taskIds": [
+            "dependent"
+          ]
+        },
+        {
+          "code": "project_archived",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "disabled",
+      "reference": "PERF-8",
+      "title": "disabled",
+      "eligibility": "off",
+      "currentFingerprint": "sha256:7d181ca8ed6c00f053f0a05259c60b1d43f313dac2e0cae086191f8601539017",
+      "enabledFingerprint": "sha256:7d181ca8ed6c00f053f0a05259c60b1d43f313dac2e0cae086191f8601539017",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": "2026-10-15T00:00:00.000Z",
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "disabled",
+          "taskIds": []
+        },
+        {
+          "code": "project_archived",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": null,
+      "latestAttempt": null
+    },
+    {
+      "taskId": "changed",
+      "reference": "PERF-9",
+      "title": "Changed instructions",
+      "eligibility": "instructions_changed",
+      "currentFingerprint": "sha256:79376b58c95630f07f581f3f3215f8fadf8b61a0b3829ac8e9155cf90cd46a70",
+      "enabledFingerprint": "sha256:c66d480b68d37cdb2a9e049e3ab950924d9b1c1a953c4887803241c473c229bd",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "enabledAt": "2026-10-15T00:00:00.000Z",
+      "disabledAt": null,
+      "dispatchable": false,
+      "claimBlockers": [
+        {
+          "code": "instructions_changed",
+          "taskIds": []
+        },
+        {
+          "code": "active_attempt",
+          "taskIds": []
+        },
+        {
+          "code": "project_archived",
+          "taskIds": []
+        }
+      ],
+      "activeAttempt": {
+        "attemptId": "00000000-0000-4000-8000-000000000003",
+        "taskId": "changed",
+        "workerId": "fixture-worker",
+        "claimedFingerprint": "sha256:c66d480b68d37cdb2a9e049e3ab950924d9b1c1a953c4887803241c473c229bd",
+        "enablementId": "00000000-0000-4000-8000-000000000001",
+        "inputSnapshot": {
+          "taskId": "changed",
+          "reference": "PERF-10",
+          "title": "changed",
+          "description": "Frozen instructions",
+          "dependencies": [],
+          "dependents": []
+        },
+        "state": "stop_requested",
+        "progress": null,
+        "claimedAt": "2026-10-15T00:00:00.000Z",
+        "heartbeatAt": "2026-10-15T00:00:00.000Z",
+        "stopRequestedAt": "2026-10-15T00:00:00.000Z",
+        "finishedAt": null,
+        "newerInstructionsExist": true,
+        "stopRequested": true
+      },
+      "latestAttempt": {
+        "attemptId": "00000000-0000-4000-8000-000000000003",
+        "taskId": "changed",
+        "workerId": "fixture-worker",
+        "claimedFingerprint": "sha256:c66d480b68d37cdb2a9e049e3ab950924d9b1c1a953c4887803241c473c229bd",
+        "enablementId": "00000000-0000-4000-8000-000000000001",
+        "inputSnapshot": {
+          "taskId": "changed",
+          "reference": "PERF-10",
+          "title": "changed",
+          "description": "Frozen instructions",
+          "dependencies": [],
+          "dependents": []
+        },
+        "state": "stop_requested",
+        "progress": null,
+        "claimedAt": "2026-10-15T00:00:00.000Z",
+        "heartbeatAt": "2026-10-15T00:00:00.000Z",
+        "stopRequestedAt": "2026-10-15T00:00:00.000Z",
+        "finishedAt": null,
+        "newerInstructionsExist": true,
+        "stopRequested": true
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attemptId": "00000000-0000-4000-8000-000000000002",
+      "taskId": "enabled",
+      "workerId": "fixture-worker",
+      "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "inputSnapshot": {
+        "taskId": "enabled",
+        "reference": "PERF-10",
+        "title": "enabled",
+        "description": "Frozen instructions",
+        "dependencies": [],
+        "dependents": []
+      },
+      "state": "completed",
+      "progress": null,
+      "claimedAt": "2026-10-15T00:00:00.000Z",
+      "heartbeatAt": "2026-10-15T00:00:00.000Z",
+      "stopRequestedAt": null,
+      "finishedAt": "2026-10-15T00:00:00.000Z",
+      "newerInstructionsExist": false,
+      "stopRequested": false
+    },
+    {
+      "attemptId": "00000000-0000-4000-8000-000000000003",
+      "taskId": "changed",
+      "workerId": "fixture-worker",
+      "claimedFingerprint": "sha256:c66d480b68d37cdb2a9e049e3ab950924d9b1c1a953c4887803241c473c229bd",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "inputSnapshot": {
+        "taskId": "changed",
+        "reference": "PERF-10",
+        "title": "changed",
+        "description": "Frozen instructions",
+        "dependencies": [],
+        "dependents": []
+      },
+      "state": "stop_requested",
+      "progress": null,
+      "claimedAt": "2026-10-15T00:00:00.000Z",
+      "heartbeatAt": "2026-10-15T00:00:00.000Z",
+      "stopRequestedAt": "2026-10-15T00:00:00.000Z",
+      "finishedAt": null,
+      "newerInstructionsExist": true,
+      "stopRequested": true
+    },
+    {
+      "attemptId": "00000000-0000-4000-8000-000000000004",
+      "taskId": "enabled",
+      "workerId": "fixture-worker",
+      "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "inputSnapshot": {
+        "taskId": "enabled",
+        "reference": "PERF-10",
+        "title": "enabled",
+        "description": "Frozen instructions",
+        "dependencies": [],
+        "dependents": []
+      },
+      "state": "active",
+      "progress": null,
+      "claimedAt": "2026-10-15T00:00:00.000Z",
+      "heartbeatAt": "2026-10-15T00:00:00.000Z",
+      "stopRequestedAt": null,
+      "finishedAt": null,
+      "newerInstructionsExist": false,
+      "stopRequested": false
+    },
+    {
+      "attemptId": "00000000-0000-4000-8000-000000000005",
+      "taskId": "deleted-task",
+      "workerId": "fixture-worker",
+      "claimedFingerprint": "sha256:cf1f674c4af58b50842ab5586ce872c6591adf34193a5b7930ca5c16605e82f4",
+      "enablementId": "00000000-0000-4000-8000-000000000001",
+      "inputSnapshot": {
+        "taskId": "deleted-task",
+        "reference": "PERF-10",
+        "title": "deleted-task",
+        "description": "Frozen instructions",
+        "dependencies": [],
+        "dependents": []
+      },
+      "state": "completed",
+      "progress": null,
+      "claimedAt": "2026-10-15T00:00:00.000Z",
+      "heartbeatAt": "2026-10-15T00:00:00.000Z",
+      "stopRequestedAt": null,
+      "finishedAt": "2026-10-15T00:00:00.000Z",
+      "newerInstructionsExist": false,
+      "stopRequested": false
+    }
+  ]
+}"
+`;

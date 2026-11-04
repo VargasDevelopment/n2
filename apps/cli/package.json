@@ -1,0 +1,21 @@
+{
+  "name": "@n2/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "n2": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "pnpm build && vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@n2/client": "workspace:*",
+    "@n2/contracts": "workspace:*",
+    "tsup": "8.5.1",
+    "zod": "^4.4.3"
+  },
+  "license": "MIT"
+}

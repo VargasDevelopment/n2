@@ -1,0 +1,24 @@
+.refresh-warning {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 9px 10px;
+  border: 1px solid color-mix(in srgb, var(--color-warning) 28%, transparent);
+  border-radius: var(--radius-control);
+  color: var(--color-warning-text);
+  background: color-mix(in srgb, var(--color-warning-surface) 12%, transparent);
+  font-size: var(--font-size-small);
+  line-height: 1.4;
+}
+
+.refresh-warning button {
+  flex: 0 0 auto;
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb, var(--color-warning) 30%, transparent);
+  border-radius: var(--radius-control);
+  color: var(--color-warning-text);
+  background: color-mix(in srgb, var(--color-warning-surface) 16%, transparent);
+  cursor: pointer;
+}

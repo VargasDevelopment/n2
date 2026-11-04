@@ -1,0 +1,283 @@
+/*
+ * Layout geometry shared outside its owner: the toast lane avoids the topbar, the canvas panels
+ * (Inspector, Project Activity), React Flow's controls and the canvas's top controls, and panels
+ * start below those top controls and end above the toolbar. The canvas fills the viewport below
+ * the topbar, so its width is the viewport's and a 30% band is 30% of (viewport - topbar). A
+ * hidden minimap clears nothing.
+ */
+:root {
+  --topbar-height: 72px;
+  --inspector-inset: 14px;
+  /* The Inspector and the Activity sheet share one width (INSPECTOR_WIDTH in graphInteraction.ts). */
+  --canvas-panel-width: 380px;
+  --inspector-width: min(var(--canvas-panel-width), calc(100vw - 2 * var(--inspector-inset)));
+  /* A side Inspector ends this far above the canvas's bottom edge. */
+  --inspector-bottom-clearance: var(--inspector-inset);
+  --inspector-band-height: min(calc((100dvh - var(--topbar-height)) * 0.3), 320px);
+  --canvas-panel-margin: 15px;
+  --canvas-controls-width: 28px;
+  --canvas-minimap-width: 202px;
+  --canvas-minimap-clearance: calc(var(--canvas-panel-margin) + var(--canvas-minimap-width));
+  --canvas-top-controls-inset: 16px;
+  --canvas-top-controls-height: 44px;
+  --canvas-top-controls-gap: 8px;
+  /* Kept free above the canvas's bottom edge for the toolbar. */
+  --canvas-toolbar-clearance: 96px;
+  --canvas-free-bottom: 92px;
+  --inspector-top-clearance: calc(
+    var(--canvas-top-controls-bottom) + var(--canvas-top-controls-gap)
+  );
+  --inspector-side-clearance: calc(
+    var(--inspector-inset) + var(--inspector-width) + var(--toast-lane-gap)
+  );
+  /* The top controls' lower edge, measured from the canvas top. */
+  --canvas-top-controls-bottom: calc(
+    var(--canvas-top-controls-inset) + var(--canvas-top-controls-height)
+  );
+}
+/* With the range controls shown, the top controls may wrap to a second row at any width. */
+:root:has(.canvas-wrap .roadmap-range-controls) {
+  --canvas-top-controls-bottom: calc(
+    var(--canvas-top-controls-inset) + 2 * var(--canvas-top-controls-height) +
+      var(--canvas-top-controls-gap)
+  );
+}
+
+:root {
+  /* Narrow screens shrink the sheet so the toast lane between it and the zoom controls keeps
+     its minimum width. */
+  --activity-panel-width: min(
+    var(--canvas-panel-width),
+    calc(
+      100vw - var(--toast-lane-min-width) - var(--inspector-inset) - 2 * var(--toast-lane-gap) -
+        var(--canvas-panel-margin) - var(--canvas-controls-width)
+    )
+  );
+}
+
+/*
+ * The free canvas region: the part of the window no panel or control floats over. It is defined
+ * here, and two things use it: the toast lane, and a focus request, which centres its item
+ * in the region through the .canvas-free-region probe (useCanvasFocusRequest).
+ *
+ * Each edge steps clear of every obstacle on its side: an Inspector placed there, React Flow's
+ * zoom controls (left), and the minimap and the Project Activity sheet (right); a bottom Inspector
+ * lifts the bottom edge. On the canvas the region also sits above the floating toolbar (19px
+ * offset + 56px tall). The top edge stops below the topbar and whatever sits at the top of the
+ * canvas, and below a top Inspector.
+ * Panels never squeeze the region below --toast-lane-min-width: the Activity sheet narrows on small
+ * screens, and beside it an Inspector moves to the bottom band below the breakpoint here.
+ * Supported floor: 640px wide and 480px tall. Below 640px wide the region ignores Inspectors and
+ * only avoids controls.
+ *
+ * The toast lane is the bottom centre of the region, the snackbar spot under the hand that just
+ * acted. Toasts stack below interactive surfaces (see --z-toast), so whatever they overlap would
+ * hide them and make a failure silent; keeping to the region prevents that. The stack centres in
+ * the lane, and a toast is never wider than the lane, so a narrow lane wraps text instead of
+ * overlapping. The lane is never taller than the region: NotificationProvider shows the newest
+ * toasts that fit and queues the rest, and each text line clamps at two lines, so one toast cannot
+ * outgrow the lane either. Below 480px tall the newest toast may not fit its lane; it still shows,
+ * even over a control, because a hidden error is worse (see toastLane.ts).
+ */
+:root {
+  --toast-lane-base: 24px;
+  --toast-lane-gap: 12px;
+  /* Canvas panels never squeeze the region narrower than this (see the Activity breakpoint below). */
+  --toast-lane-min-width: 300px;
+}
+/* Set on body, where the :has() rules below can adjust it, and inherited by the lane and probe. */
+body {
+  --overlay-inspector-top: var(--inspector-inset);
+  --overlay-inspector-right: var(--inspector-inset);
+  --overlay-inspector-bottom: auto;
+  --overlay-inspector-left: auto;
+  --overlay-inspector-width: var(--inspector-width);
+  --overlay-inspector-height: auto;
+  /* A side Inspector is as tall as its content, up to the room between its top and clearance. */
+  --overlay-inspector-side-max-height: calc(
+    100% - var(--overlay-inspector-top) - var(--inspector-bottom-clearance)
+  );
+  --overlay-inspector-max-height: var(--overlay-inspector-side-max-height);
+  /* A side panel keeps its face in view and scrolls its body; a short band scrolls as a whole,
+     so the face never fills it. */
+  --overlay-inspector-display: flex;
+  --overlay-inspector-enter: inspector-enter;
+  --free-margin: 16px;
+  --free-inspector-left: 0px;
+  --free-inspector-right: 0px;
+  --free-activity-right: 0px;
+  --free-controls-left: 0px;
+  --free-minimap-right: 0px;
+  --free-bottom: var(--toast-lane-base);
+  /* The top edge clears the lower of the chrome above the region and a top Inspector. */
+  --free-top-chrome: var(--topbar-height);
+  --free-top-inspector: 0px;
+  --free-top: calc(max(var(--free-top-chrome), var(--free-top-inspector)) + var(--toast-lane-gap));
+  --free-left: max(var(--free-margin), var(--free-inspector-left), var(--free-controls-left));
+  --free-right: max(
+    var(--free-margin),
+    var(--free-inspector-right),
+    var(--free-activity-right),
+    var(--free-minimap-right)
+  );
+}
+body:has(.canvas-toolbar) {
+  --free-bottom: var(--canvas-free-bottom);
+}
+body:has(.canvas-wrap) {
+  --free-top-chrome: calc(var(--topbar-height) + var(--canvas-top-controls-bottom));
+}
+body:has(.canvas-wrap .react-flow__controls) {
+  --free-controls-left: calc(
+    var(--canvas-panel-margin) + var(--canvas-controls-width) + var(--toast-lane-gap)
+  );
+}
+body:has(.canvas-wrap .react-flow__minimap) {
+  --free-minimap-right: calc(var(--canvas-minimap-clearance) + var(--toast-lane-gap));
+}
+/* A class records the chosen placement. Activity temporarily overrides it without changing it. */
+.inspector {
+  position: absolute;
+  top: var(--overlay-inspector-top);
+  right: var(--overlay-inspector-right);
+  bottom: var(--overlay-inspector-bottom);
+  left: var(--overlay-inspector-left);
+  width: var(--overlay-inspector-width);
+  height: var(--overlay-inspector-height);
+  max-height: var(--overlay-inspector-max-height);
+  display: var(--overlay-inspector-display);
+}
+body:not(:has(.activity-panel)):has(.inspector--right) {
+  --free-inspector-right: var(--inspector-side-clearance);
+}
+body:not(:has(.activity-panel)):has(.inspector--left) {
+  --overlay-inspector-top: var(--inspector-top-clearance);
+  --overlay-inspector-right: auto;
+  --overlay-inspector-left: var(--inspector-inset);
+  --overlay-inspector-enter: inspector-enter-left;
+  --free-inspector-left: var(--inspector-side-clearance);
+}
+body:not(:has(.activity-panel)):has(.inspector--top, .inspector--bottom),
+body:has(.activity-panel):has(.inspector) {
+  --overlay-inspector-left: var(--inspector-inset);
+  --overlay-inspector-width: auto;
+  --overlay-inspector-height: var(--inspector-band-height);
+  --overlay-inspector-max-height: none;
+  --overlay-inspector-display: block;
+}
+body:not(:has(.activity-panel)):has(.inspector--top) {
+  --overlay-inspector-top: var(--inspector-top-clearance);
+  --overlay-inspector-bottom: auto;
+  --overlay-inspector-enter: inspector-enter-top;
+  --free-top-inspector: calc(
+    var(--topbar-height) + var(--canvas-top-controls-bottom) + var(--canvas-top-controls-gap) +
+      var(--inspector-band-height)
+  );
+}
+/* A bottom band clears the toolbar; beside Activity it also ends before the sheet. */
+body:not(:has(.activity-panel)):has(.inspector--bottom),
+body:has(.activity-panel):has(.inspector) {
+  --overlay-inspector-top: auto;
+  --overlay-inspector-bottom: var(--canvas-toolbar-clearance);
+  --overlay-inspector-enter: inspector-enter-bottom;
+  --free-bottom: max(
+    var(--canvas-free-bottom),
+    calc(var(--canvas-toolbar-clearance) + var(--inspector-band-height) + var(--toast-lane-gap))
+  );
+}
+body:has(.activity-panel) {
+  --free-activity-right: calc(
+    var(--inspector-inset) + var(--activity-panel-width) + var(--toast-lane-gap)
+  );
+  --overlay-inspector-right: calc(2 * var(--inspector-inset) + var(--activity-panel-width));
+}
+.activity-panel {
+  position: absolute;
+  top: var(--inspector-inset);
+  right: var(--inspector-inset);
+  bottom: var(--inspector-inset);
+  width: var(--activity-panel-width);
+}
+/*
+ * The Library's Activity sheet keeps the canvas sheet's geometry, so the free region above, and
+ * with it the toast lane, steps clear of it on the Library too. The Library page scrolls, so the
+ * sheet is fixed below its topbar instead of filling a canvas.
+ */
+.project-library .activity-panel {
+  position: fixed;
+  top: calc(var(--topbar-height) + var(--inspector-inset));
+}
+/* The toolbar scrolls between the panels instead of covering either one. */
+body:has(.activity-panel) .canvas-toolbar {
+  --toolbar-clear-left: 0px;
+  --toolbar-clear-right: calc(var(--inspector-inset) + var(--activity-panel-width));
+  left: calc((100% + var(--toolbar-clear-left) - var(--toolbar-clear-right)) / 2);
+  max-width: calc(100% - var(--toolbar-clear-left) - var(--toolbar-clear-right) - 24px);
+}
+body:has(.activity-panel) .canvas-toolbar__scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+/*
+ * A left Inspector and Activity leave the toast lane's 300px minimum from 1112px:
+ * (14px inset + 380px Inspector + 12px gap) + (14px inset + 380px sheet + 12px gap) + 300px.
+ * CSS custom properties cannot be used in media queries; keep the single breakpoint here beside
+ * the panel tokens and free-region recipes it coordinates.
+ */
+@media (min-width: 1112px) {
+  body:has(.activity-panel):has(.inspector) {
+    --overlay-inspector-top: var(--inspector-top-clearance);
+    --overlay-inspector-right: auto;
+    --overlay-inspector-bottom: auto;
+    --overlay-inspector-width: var(--inspector-width);
+    --overlay-inspector-height: auto;
+    --overlay-inspector-max-height: var(--overlay-inspector-side-max-height);
+    --overlay-inspector-display: flex;
+    --overlay-inspector-enter: inspector-enter-left;
+    --free-inspector-left: var(--inspector-side-clearance);
+    --free-bottom: var(--canvas-free-bottom);
+  }
+  body:has(.activity-panel):has(.inspector) .canvas-toolbar {
+    --toolbar-clear-left: calc(var(--inspector-inset) + var(--inspector-width));
+  }
+}
+/* Narrow canvases hide the minimap, so its clearance and visibility change together. */
+@media (max-width: 900px) {
+  :root {
+    --inspector-inset: 10px;
+    --canvas-minimap-clearance: 0px;
+    /* The toolbar spans the canvas here, so side panels end above it rather than under it. */
+    --inspector-bottom-clearance: var(--canvas-toolbar-clearance);
+  }
+  .canvas-toolbar {
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+  }
+  .canvas-toolbar__scroll {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .canvas-toolbar__scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .canvas-toolbar__group > span,
+  .canvas-hint,
+  .canvas-wrap .react-flow__minimap {
+    display: none;
+  }
+}
+/* Below the floor a side panel leaves no usable region, so toasts may sit beneath it. */
+@media (max-width: 639px) {
+  body:has(.project-shell :is(.inspector, .activity-panel)) {
+    --free-inspector-left: 0px;
+    --free-inspector-right: 0px;
+    --free-activity-right: 0px;
+  }
+}
+/* An invisible box the size of the free region, which a focus request measures. */
+.canvas-free-region {
+  position: fixed;
+  inset: var(--free-top) var(--free-right) var(--free-bottom) var(--free-left);
+  visibility: hidden;
+  pointer-events: none;
+}

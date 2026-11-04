@@ -1,0 +1,49 @@
+{
+  "name": "n2",
+  "version": "0.0.0",
+  "private": true,
+  "description": "N2 \u2014 a local-first, visual-first, agent-native personal workspace.",
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.4",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "check": "pnpm licenses:check && pnpm test:licenses && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:code-health && pnpm code-health && pnpm build",
+    "code-health": "tsx scripts/code-health/index.ts",
+    "code-health:update": "tsx scripts/code-health/index.ts --update",
+    "dev": "concurrently -k -n server,web -c magenta,cyan \"pnpm --filter @n2/server dev\" \"pnpm --filter @n2/web dev\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings 0",
+    "n2": "tsx apps/cli/src/index.ts",
+    "test": "pnpm -r --if-present test",
+    "test:code-health": "node --import tsx --test scripts/code-health/*.tests.ts",
+    "typecheck": "tsc -p scripts/tsconfig.json && pnpm -r --if-present typecheck",
+    "licenses:generate": "tsx scripts/licenses/index.ts --write",
+    "licenses:check": "tsx scripts/licenses/index.ts",
+    "test:licenses": "node --import tsx --test scripts/licenses/*.tests.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.2.0",
+    "@types/semver": "^7.8.0",
+    "@typescript-eslint/utils": "^8.67.0",
+    "concurrently": "^10.0.5",
+    "eslint": "^10.9.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "~0.5.4",
+    "globals": "^17.11.0",
+    "prettier": "3.9.6",
+    "remark-parse": "^11.0.0",
+    "semver": "^7.8.5",
+    "tsx": "^4.23.12",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.67.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
+    "vitest": "^4.1.11",
+    "yaml": "^2.9.1"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "thresholds": {
+    "largeFileLines": {
+      "analyzer": 500,
+      "production": 500,
+      "test": 700
+    },
+    "functionComplexity": {
+      "variant": "modified",
+      "max": 20
+    }
+  },
+  "largeFiles": {
+    "analyzer": {},
+    "production": {
+      "packages/contracts/src/index.ts": 547,
+      "packages/db/src/migrations.ts": 590
+    },
+    "test": {
+      "apps/web/src/components/GraphCanvasInteraction.test.tsx": 784,
+      "apps/web/src/useProjectCommands.test.tsx": 757,
+      "packages/db/test/ProjectRepository.test.ts": 738
+    }
+  },
+  "functionComplexity": {},
+  "metrics": {
+    "tsSuppressions": {},
+    "unsafeCasts": {
+      "apps/web/src/useCanvasModeViewport.test.tsx#c68be756022e2429b80202987adcfda7e198caeddff6a401fdb308f87657d1d4": 1
+    },
+    "eslintDisables": {},
+    "skippedTests": {},
+    "exclusiveTests": {},
+    "brokenRelativeMarkdownLinks": {},
+    "unsanctionedProcessExit": {
+      "apps/cli/src/index.ts#45110e028c8688f3e91adb7f4cccacf6cc53214b605d3e96f0739a468bef32c3": 1,
+      "apps/server/src/index.ts#09c37467d79412c6a4eacdf22a1081c4d868ffee2174fb58de40b94bc976b99d": 1
+    },
+    "rawColorLiterals": {},
+    "designTokenReferences": {},
+    "designTokenAllowances": {}
+  }
+}

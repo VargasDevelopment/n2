@@ -1,0 +1,25 @@
+{
+  "name": "@n2/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx watch src/index.ts",
+    "test": "pnpm build && vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.1",
+    "@n2/application": "workspace:*",
+    "@n2/contracts": "workspace:*",
+    "@n2/db": "workspace:*",
+    "better-sqlite3": "^13.0.3",
+    "hono": "^4.13.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "tsup": "8.5.1"
+  },
+  "license": "MIT"
+}

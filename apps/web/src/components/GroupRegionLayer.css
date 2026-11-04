@@ -1,0 +1,125 @@
+/*
+ * Group regions (ADR 0016): the freeform canvas draws Member of as containment. The viewport portal
+ * sits behind the node layer while it holds the regions, as the structured view boards do.
+ */
+.react-flow__viewport-portal:has(.group-regions) {
+  z-index: -1;
+}
+.group-regions {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.group-region__area {
+  fill: color-mix(in srgb, var(--color-group-region) 10%, transparent);
+  stroke: var(--color-group-region-edge);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  transition:
+    fill 0.16s ease,
+    stroke 0.16s ease,
+    opacity 0.16s ease;
+}
+/* Outer regions are fainter, so nested regions read as rings rather than stacked washes. */
+.group-region--level-1 .group-region__area {
+  fill: color-mix(in srgb, var(--color-group-region) 6%, transparent);
+}
+.group-region--level-2 .group-region__area {
+  fill: color-mix(in srgb, var(--color-group-region) 4%, transparent);
+  stroke-dasharray: 6 5;
+}
+.group-region__tether {
+  fill: none;
+  stroke: var(--color-group-region-edge);
+  stroke-width: 1.25;
+  stroke-dasharray: 2 5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+/* The selection's Groups, and the hovered card's, light up. */
+.group-region[data-group-region-focus] .group-region__area,
+.canvas-wrap[data-network-highlight-active]
+  .group-region[data-network-emphasis]
+  .group-region__area {
+  fill: color-mix(in srgb, var(--color-group-region) 16%, transparent);
+  stroke: var(--color-group-region-emphasis);
+  stroke-width: 1.5;
+}
+.group-region[data-group-region-focus] .group-region__tether,
+.canvas-wrap[data-network-highlight-active]
+  .group-region[data-network-emphasis]
+  .group-region__tether {
+  stroke: var(--color-group-region-emphasis);
+}
+.canvas-wrap[data-network-highlight-active] .group-region:not([data-network-emphasis]) {
+  opacity: 0.4;
+}
+
+/* Zoomed out: counted bundles stand in for the Depends on relationships between Groups. */
+.relationship-bundle {
+  fill: none;
+  stroke: var(--color-relationship-depends-on);
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+.relationship-bundle__arrow {
+  fill: var(--color-relationship-depends-on);
+}
+/*
+ * The selection steps unrelated bundles back as it does the lines they stand for. Their counts step
+ * back less, so the numbers stay readable.
+ */
+.canvas-wrap[data-relationship-focus-active] .relationship-bundle:not([data-relationship-focus]) {
+  opacity: 0.22;
+}
+.canvas-wrap[data-relationship-focus-active]
+  .relationship-bundle-count:not([data-relationship-focus]) {
+  opacity: 0.4;
+}
+.canvas-wrap[data-network-highlight-active] .relationship-bundle {
+  opacity: 0.15;
+}
+
+.canvas-overview-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+.group-region-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 240px;
+  overflow: hidden;
+  padding: 1px 7px 2px;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-secondary);
+  background: color-mix(in srgb, var(--color-bg-canvas) 82%, transparent);
+  font: 600 var(--font-size-small) / 1.25 var(--font-sans);
+  letter-spacing: 0.005em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.group-region-title--outer {
+  color: var(--color-text);
+  font-size: var(--font-size-body);
+}
+.relationship-bundle-count {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 22px;
+  padding: 2px 7px;
+  border: 1px solid
+    color-mix(in srgb, var(--color-relationship-depends-on-emphasis) 45%, transparent);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  background: var(--color-surface);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--color-shadow) 28%, transparent);
+  font: var(--font-size-meta) / 1.2 var(--font-mono);
+  text-align: center;
+}

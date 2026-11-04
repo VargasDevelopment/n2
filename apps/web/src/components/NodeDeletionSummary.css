@@ -1,0 +1,46 @@
+.node-deletion__items {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 12px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-contrast) 8%, transparent);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-contrast) 2.5%, transparent);
+  list-style: none;
+}
+/* Rows share the list's columns so titles align however long each reference is. */
+.node-deletion__items li {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  min-width: 0;
+  padding: 9px 12px;
+}
+.node-deletion__items li + li {
+  border-top: 1px solid color-mix(in srgb, var(--color-contrast) 6%, transparent);
+}
+.node-deletion__reference {
+  color: var(--color-accent-text);
+  font: var(--font-size-micro) var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.node-deletion__title {
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.node-deletion__items .node-deletion__more {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+}
+.node-deletion__permanent {
+  color: var(--color-text-faint);
+  font-size: var(--font-size-small);
+}

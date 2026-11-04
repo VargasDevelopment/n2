@@ -1,0 +1,79 @@
+/*
+ * The canvas's top controls share one wrapping row, so they can never overlap each other: the
+ * range controls center in the room beside the switcher and drop to a second row when there is
+ * none. The toast lane reserves that band (see Notifications.css).
+ */
+.canvas-view-controls {
+  position: absolute;
+  z-index: var(--z-canvas-controls);
+  top: var(--canvas-top-controls-inset);
+  right: 16px;
+  left: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--canvas-top-controls-gap);
+  pointer-events: none;
+}
+.canvas-view-controls > * {
+  max-height: var(--canvas-top-controls-height);
+  pointer-events: auto;
+}
+.canvas-view-controls:not([data-swimlane-active='true']) > .roadmap-range-controls {
+  margin-inline: auto;
+}
+
+.canvas-view-switcher {
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid color-mix(in srgb, var(--color-contrast) 11%, transparent);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  box-shadow: 0 10px 32px color-mix(in srgb, var(--color-shadow) 30%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.canvas-view-switcher button {
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+  background: transparent;
+  cursor: pointer;
+  font: var(--font-size-micro) var(--font-mono);
+}
+
+.canvas-view-switcher button:hover {
+  color: var(--color-text);
+}
+
+.canvas-view-switcher button[aria-pressed='true'] {
+  color: var(--color-accent-text-strong);
+  border-color: color-mix(in srgb, var(--color-accent) 42%, transparent);
+  background: color-mix(in srgb, var(--color-accent-deep) 20%, transparent);
+}
+
+.canvas-view-switcher__scope {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 3px;
+  padding-left: 8px;
+  border-left: 1px solid color-mix(in srgb, var(--color-contrast) 10%, transparent);
+  color: var(--color-text-muted);
+  font: var(--font-size-micro) var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.canvas-view-switcher__scope select {
+  max-width: 180px;
+  padding: 6px 24px 6px 8px;
+  border: 1px solid color-mix(in srgb, var(--color-contrast) 11%, transparent);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  background: var(--color-surface-raised);
+  font: var(--font-size-micro) var(--font-mono);
+  text-transform: none;
+}

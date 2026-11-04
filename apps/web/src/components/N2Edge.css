@@ -1,0 +1,146 @@
+/*
+ * Relationship edges, quiet at rest (ADR 0016). N2Edge writes how each relationship rests:
+ *   data-relationship-rest     line | stub | hidden (see relationshipRest.ts)
+ *   data-relationship-focus    the selection reveals it
+ *   data-relationship-bundled  a counted bundle stands for it when zoomed out
+ *   data-label-at-rest         its label shows at rest (blocking only)
+ * The hover highlight (data-network-emphasis) and the selection focus reveal a relationship whole,
+ * with its label, by CSS alone, so hovering never re-renders the canvas.
+ */
+.n2-edge {
+  --network-edge-stroke: var(--color-relationship-depends-on);
+  /* React Flow strokes a selected edge with this variable; the relationship's own emphasis wins. */
+  --xy-edge-stroke-selected: var(--network-edge-stroke);
+  stroke-width: 1.35;
+  transition:
+    stroke 0.16s ease,
+    stroke-width 0.16s ease,
+    opacity 0.16s ease;
+}
+.n2-edge--member_of {
+  --network-edge-stroke: var(--color-relationship-member-of-emphasis);
+  stroke: var(--color-relationship-member-of);
+  stroke-width: 1.15;
+  stroke-dasharray: 2 4;
+  stroke-linecap: round;
+}
+.n2-edge--depends_on {
+  --network-edge-stroke: var(--color-relationship-depends-on-emphasis);
+  stroke: var(--color-relationship-depends-on);
+}
+.n2-edge--blocking {
+  --network-edge-stroke: var(--color-relationship-blocking-emphasis);
+  stroke: var(--color-relationship-blocking);
+  stroke-width: 2.4;
+}
+[data-relationship-focus] > .n2-edge:not(.n2-edge--selected) {
+  stroke: var(--network-edge-stroke);
+  stroke-width: 2.4;
+}
+/* While the selection reveals its neighbourhood, everything else steps back but stays readable. */
+.canvas-wrap[data-relationship-focus-active]
+  [data-network-relationship-id]:not([data-relationship-focus], [data-network-emphasis])
+  > .n2-edge {
+  opacity: 0.22;
+}
+.canvas-wrap[data-network-highlight-active] .n2-edge {
+  opacity: 0.1;
+}
+.canvas-wrap[data-network-highlight-active]
+  [data-network-relationship-id][data-network-emphasis='connected']
+  .n2-edge {
+  opacity: 1;
+  stroke: var(--network-edge-stroke);
+  stroke-width: 2.8;
+}
+.canvas-wrap[data-network-highlight-active]
+  [data-network-relationship-id][data-network-emphasis='connected']
+  .n2-edge--blocking {
+  stroke-width: 3;
+}
+.n2-edge--selected {
+  stroke-width: 3;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--network-edge-stroke) 70%, transparent));
+}
+
+/* A revealed stub draws whole; the dashes are presentation attributes, so any CSS value wins. */
+[data-relationship-rest='stub']:is([data-relationship-focus], [data-network-emphasis='connected'])
+  path {
+  stroke-dasharray: none;
+}
+/* Hidden also takes the relationship out of hit testing, so it cannot be clicked unseen. */
+[data-relationship-rest='hidden']:not(
+  [data-relationship-focus],
+  [data-network-emphasis='connected']
+),
+.canvas-wrap[data-zoom-tier='overview']
+  [data-relationship-bundled]:not([data-relationship-focus], [data-network-emphasis='connected']) {
+  visibility: hidden;
+}
+
+.n2-edge__label {
+  position: absolute;
+  padding: 3px 6px;
+  border: 1px solid color-mix(in srgb, var(--color-contrast) 10%, transparent);
+  border-radius: var(--radius-pill);
+  color: var(--color-relationship-label);
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--color-shadow) 28%, transparent);
+  pointer-events: none;
+  white-space: nowrap;
+  font: var(--font-size-micro) var(--font-mono);
+  letter-spacing: 0.03em;
+  transition:
+    border-color 0.14s ease,
+    box-shadow 0.14s ease,
+    color 0.14s ease,
+    opacity 0.14s ease;
+}
+.n2-edge__label--blocking {
+  color: var(--color-danger-text);
+  border-color: color-mix(in srgb, var(--color-relationship-blocking) 42%, transparent);
+  background: color-mix(in srgb, var(--color-danger-surface) 96%, transparent);
+}
+.canvas-wrap[data-network-highlight-active] .n2-edge__label {
+  opacity: 0.1;
+}
+.canvas-wrap[data-network-highlight-active] .n2-edge__label[data-network-emphasis='connected'] {
+  opacity: 1;
+}
+/*
+ * After the highlight rules, so a quiet label stays out of the way during hover too. Scoped to the
+ * canvas: the Settings preview keeps its one sample label as a legend.
+ */
+.canvas-wrap
+  .n2-edge__label:not(
+    [data-label-at-rest],
+    [data-relationship-focus],
+    [data-network-emphasis='connected']
+  ) {
+  opacity: 0;
+}
+.n2-edge__label[data-relationship-focus]:not(.n2-edge__label--blocking, .n2-edge__label--selected) {
+  border-color: color-mix(in srgb, var(--color-relationship-selected) 50%, transparent);
+  color: var(--color-text);
+}
+.canvas-wrap[data-network-highlight-active]
+  .n2-edge__label:not(.n2-edge__label--blocking)[data-network-emphasis='connected'] {
+  border-color: color-mix(in srgb, var(--color-accent-text) 68%, transparent);
+  color: var(--color-accent-text-strong);
+  box-shadow:
+    0 4px 14px color-mix(in srgb, var(--color-shadow) 28%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-relationship-selected) 14%, transparent);
+}
+.canvas-wrap[data-network-highlight-active]
+  .n2-edge__label--blocking[data-network-emphasis='connected'] {
+  box-shadow:
+    0 4px 14px color-mix(in srgb, var(--color-shadow) 28%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-relationship-blocking) 16%, transparent);
+}
+.n2-edge__label--selected {
+  border-color: color-mix(in srgb, var(--color-relationship-selected) 72%, transparent);
+  color: var(--color-accent-text-strong);
+  box-shadow:
+    0 4px 14px color-mix(in srgb, var(--color-shadow) 28%, transparent),
+    0 0 0 2px color-mix(in srgb, var(--color-relationship-selected) 14%, transparent);
+}

@@ -1,0 +1,69 @@
+.roadmap-range-controls {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid color-mix(in srgb, var(--color-contrast) 11%, transparent);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  box-shadow: 0 10px 32px color-mix(in srgb, var(--color-shadow) 30%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.roadmap-range-controls button,
+.roadmap-range-controls input {
+  border: 1px solid transparent;
+  color: var(--color-text-secondary);
+  background: transparent;
+  font: var(--font-size-meta) var(--font-mono);
+}
+
+.roadmap-range-controls button {
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.roadmap-range-controls button:hover {
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-accent-deep) 18%, transparent);
+}
+
+.roadmap-range-controls__scrub {
+  width: 32px;
+  font-size: var(--font-size-heading) !important;
+}
+
+.roadmap-range-controls__dates {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 5px;
+  color: var(--color-text-faint);
+  font: var(--font-size-micro) var(--font-mono);
+}
+
+.roadmap-range-controls__dates > span:first-child {
+  margin-right: 3px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.roadmap-range-controls input {
+  width: 112px;
+  padding: 6px;
+  border-radius: var(--radius-control);
+  color-scheme: var(--color-scheme);
+}
+
+.roadmap-range-controls input:hover,
+.roadmap-range-controls input:focus {
+  border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  outline: none;
+  background: color-mix(in srgb, var(--color-accent-deep) 10%, transparent);
+}
+
+.roadmap-range-controls__auto {
+  padding: 0 9px;
+  color: var(--color-accent-text) !important;
+}

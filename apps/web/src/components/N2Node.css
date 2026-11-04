@@ -1,0 +1,167 @@
+/*
+ * Work node card grammar (N2-50). Kind is silhouette: a Group is a stack of sheets with a larger
+ * radius and a violet fill, a Task is a single card. Effective status is signal: it tints the border
+ * (and the Group's lower sheet), blocked work gets a red wash, and done work recedes. Selection is an
+ * outer ring, so it never competes with the status border.
+ */
+.n2-node {
+  --node-fill: var(--gradient-node-task);
+  --node-wash: linear-gradient(transparent, transparent);
+  --node-signal: var(--color-border-strong);
+  --node-ring: 0 0 transparent;
+  --node-stack: 0 0 transparent;
+  width: 100%;
+  height: 100%;
+  padding: 16px 16px 14px;
+  position: relative;
+  border: 1px solid var(--node-signal);
+  border-radius: var(--radius-card);
+  background: var(--node-wash), var(--node-fill);
+  box-shadow:
+    var(--node-ring),
+    var(--node-stack),
+    0 12px 36px color-mix(in srgb, var(--color-shadow) 26%, transparent);
+  transition:
+    border-color 0.16s,
+    box-shadow 0.16s;
+}
+.n2-node--group {
+  --node-fill: var(--gradient-node-group);
+  --node-stack: 0 9px 0 -4px var(--color-surface-tinted), 0 9px 0 -3px var(--node-signal);
+  border-radius: var(--radius-panel);
+}
+.n2-node[data-status='in_progress'] {
+  --node-signal: color-mix(in srgb, var(--color-status-in-progress) 58%, transparent);
+}
+.n2-node[data-status='blocked'] {
+  --node-signal: color-mix(in srgb, var(--color-status-blocked) 72%, transparent);
+  --node-wash: radial-gradient(
+    120% 90% at 0% 0%,
+    color-mix(in srgb, var(--color-status-blocked) 13%, transparent),
+    transparent 70%
+  );
+}
+.n2-node[data-status='done'] {
+  --node-signal: color-mix(in srgb, var(--color-status-done) 40%, transparent);
+}
+.n2-node[data-status='done'] .n2-node__title {
+  color: var(--color-text-secondary);
+}
+.n2-node[data-status='done'] .n2-node__track span {
+  background: var(--color-status-done);
+}
+.n2-node[data-status='blocked'] .n2-node__track span {
+  background: var(--gradient-progress-blocked);
+}
+.n2-node:hover {
+  --node-ring: 0 0 0 1px color-mix(in srgb, var(--color-contrast) 10%, transparent);
+}
+.n2-node--selected,
+.n2-node--selected:hover {
+  --node-ring:
+    0 0 0 3px var(--color-bg-canvas),
+    0 0 0 4.5px color-mix(in srgb, var(--color-accent-text) 90%, transparent),
+    0 0 26px color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+.n2-node__status[data-status='in_progress'] {
+  color: var(--color-accent-text);
+}
+.n2-node__status[data-status='blocked'] {
+  color: var(--color-status-blocked);
+}
+.n2-node__status[data-status='done'] {
+  color: var(--color-status-done);
+}
+/* The requested status, shown only when it differs: a fixed-size glyph that cannot truncate. */
+.n2-node__requested {
+  display: inline-flex;
+  align-items: center;
+  height: 10px;
+  padding-left: 5px;
+  border-left: 1px solid color-mix(in srgb, var(--color-contrast) 16%, transparent);
+}
+.n2-node__requested .status-dot {
+  width: 7px;
+  height: 7px;
+}
+.canvas-wrap[data-network-highlight-active] .n2-node,
+.canvas-wrap[data-network-highlight-active] .n2-note {
+  opacity: 0.2;
+}
+.canvas-wrap[data-network-highlight-active] .n2-node[data-network-emphasis='focus'],
+.canvas-wrap[data-network-highlight-active] .n2-node[data-network-emphasis='connected'],
+.canvas-wrap[data-network-highlight-active] .n2-note[data-network-emphasis='focus'] {
+  opacity: 1;
+}
+
+.n2-handle {
+  width: var(--relationship-handle-depth);
+  height: var(--relationship-handle-length);
+  border: 2px solid var(--color-handle-border);
+  border-radius: 5px;
+  background: var(--color-handle);
+  opacity: 0.48;
+  transition: opacity 0.15s;
+}
+.n2-node:hover .n2-handle,
+.n2-node--selected .n2-handle {
+  opacity: 1;
+}
+.n2-handle--left {
+  border-radius: 5px 2px 2px 5px;
+}
+.n2-handle--right {
+  border-radius: 2px 5px 5px 2px;
+}
+.n2-handle--top,
+.n2-handle--bottom {
+  width: var(--relationship-handle-length);
+  height: var(--relationship-handle-depth);
+}
+.n2-handle--top {
+  border-radius: 5px 5px 2px 2px;
+}
+.n2-handle--bottom {
+  border-radius: 2px 2px 5px 5px;
+}
+.n2-node__blocked {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  padding-left: 9px;
+  border-left: 1px solid color-mix(in srgb, var(--color-status-blocked) 28%, transparent);
+  color: var(--color-status-blocked);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/*
+ * Header layout guarantee: one line that never wraps. The kind word and the status button (with
+ * its fixed-size requested glyph) never shrink; the reference is the only part that gives way, and
+ * it truncates with an ellipsis while its title keeps the full reference.
+ */
+.n2-node__eyebrow {
+  display: flex;
+  align-items: center;
+  height: var(--n2-eyebrow-height);
+  white-space: nowrap;
+  --n2-eyebrow-height: 18px;
+}
+.n2-node__eyebrow > .n2-node__kind {
+  flex: none;
+  margin-right: 0.45em;
+}
+.n2-node__eyebrow > .n2-node__reference {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.n2-node__eyebrow > .n2-node__status-slot {
+  display: flex;
+  flex: none;
+  margin-left: auto;
+  padding-left: 6px;
+}
+.n2-node__eyebrow .n2-node__status {
+  height: var(--n2-eyebrow-height);
+}

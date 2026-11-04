@@ -1,0 +1,29 @@
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.settings-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: var(--font-size-small);
+}
+
+.settings-entry:not(:disabled):hover {
+  color: var(--color-text);
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-contrast) 4%, transparent);
+}
+
+.settings-entry:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

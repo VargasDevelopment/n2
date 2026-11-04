@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090a0d" />
+    <meta
+      name="description"
+      content="N2 — a local-first, visual-first, agent-native personal workspace."
+    />
+    <title>N²</title>
+    <script>
+      // Resolves the cached Theme for this URL before styles load: a Project URL uses that
+      // Project's pinned Theme, otherwise the Application Preference; System follows the current OS.
+      // The server stays authoritative; src/theme.ts rewrites this hint. The path pattern mirrors
+      // parseAppLocation in src/appLocation.ts.
+      try {
+        // Each Theme's --color-bg, fixed by the stylesheets, for browser chrome. themes.test.ts
+        // keeps this in step with tokens.css and themes.css. Block-scoped, so it leaks no global.
+        const backgrounds = {
+          midnight: '#090a0d',
+          mono: '#000000',
+          paper: '#f4f1ea',
+          ember: '#0f0c0a'
+        };
+        const hint = JSON.parse(localStorage.getItem('n2.theme') ?? 'null');
+        const match = /^\/projects\/([^/]+)\/?$/.exec(window.location.pathname);
+        let projectId = '';
+        try {
+          projectId = match ? decodeURIComponent(match[1]).trim() : '';
+        } catch {
+          // A malformed Project path opens the Library, which uses the application Theme.
+        }
+        const pinned = projectId ? hint?.projectThemes?.[projectId] : undefined;
+        const choice = typeof pinned === 'string' ? pinned : hint?.theme;
+        const theme =
+          choice === 'system'
+            ? window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'midnight'
+              : 'paper'
+            : choice;
+        if (typeof theme === 'string') document.documentElement.dataset.theme = theme;
+        const background = Object.hasOwn(backgrounds, theme) ? backgrounds[theme] : undefined;
+        if (background) {
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', background);
+        }
+      } catch {
+        // A missing or malformed hint just means the default paints first.
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+.n2-note {
+  width: 100%;
+  min-height: inherit;
+  padding: 18px 19px 20px;
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--color-note) 24%, transparent);
+  border-radius: 5px 17px 8px 14px;
+  color: var(--color-note-text);
+  background:
+    linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--color-contrast) 2.5%, transparent),
+      transparent 24%
+    ),
+    var(--gradient-note);
+  box-shadow:
+    0 16px 42px color-mix(in srgb, var(--color-shadow) 28%, transparent),
+    inset 3px 0 0 color-mix(in srgb, var(--color-note) 30%, transparent);
+  transition:
+    border-color 0.16s,
+    box-shadow 0.16s;
+}
+.n2-note::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 20px;
+  left: 20px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-note) 34%, transparent),
+    transparent
+  );
+}
+.n2-note:hover,
+.n2-note--selected {
+  border-color: color-mix(in srgb, var(--color-note) 58%, transparent);
+  box-shadow:
+    0 18px 48px color-mix(in srgb, var(--color-shadow) 34%, transparent),
+    inset 3px 0 0 color-mix(in srgb, var(--color-note) 50%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-note) 8%, transparent);
+}
+.n2-note__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-note-text-faint);
+  font: var(--font-size-micro) var(--font-mono);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.n2-note__eyebrow span {
+  color: var(--color-note);
+  font-size: var(--font-size-meta);
+}
+
+.n2-note__eyebrow .n2-note__reference {
+  color: color-mix(in srgb, currentColor 72%, transparent);
+  font-size: inherit;
+  letter-spacing: 0.08em;
+}
+.n2-note .n2-node__title,
+.n2-note .n2-node__title-input {
+  min-height: 0;
+  height: auto;
+  margin: 11px 0 12px;
+  color: var(--color-note-text-strong);
+  font-size: var(--font-size-title);
+  -webkit-line-clamp: 3;
+}
+.n2-note .n2-node__title-input {
+  border-bottom-color: color-mix(in srgb, var(--color-note) 62%, transparent);
+}
+.n2-note__content {
+  color: var(--color-note-text-muted);
+  font-size: var(--font-size-small);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.n2-canvas-note--folded .n2-note {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.n2-canvas-note--folded .n2-note__eyebrow,
+.n2-canvas-note--folded .n2-node__title,
+.n2-canvas-note--folded .n2-node__title-input {
+  flex: 0 0 auto;
+}
+.n2-canvas-note--folded .n2-note__content {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  /* Masks read only alpha, so any opaque color works; currentColor keeps this out of the theme. */
+  mask-image: linear-gradient(to bottom, currentColor calc(100% - 32px), transparent);
+}
+/*
+ * A long Freeform Note folds (NoteCard sets the height): its text dissolves into the paper over the
+ * last few lines, and the Expand control sits under the fade, where reading stops.
+ */
+.n2-note[data-note-fold='folded'] .n2-note__content {
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, currentColor calc(100% - 56px), transparent);
+}
+.n2-note__fold {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* The negative inline margin aligns the label, not the hover wash, with the text above. */
+  margin: 8px 0 -8px -9px;
+  padding: 5px 10px 5px 9px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--color-note-text-faint);
+  background: transparent;
+  font: var(--font-size-meta) var(--font-mono);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    color 0.16s,
+    background-color 0.16s;
+}
+/*
+ * An expanded Note's Fold ends its eyebrow row, so folding never takes the Note out from under the
+ * pointer (see NoteCard). Grid placement keeps Fold the same element as Expand, so it keeps focus;
+ * the negative margins keep the pill's wash from growing the row.
+ */
+.n2-note[data-note-fold='expanded'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: start;
+}
+.n2-note[data-note-fold='expanded'] > * {
+  grid-column: 1 / -1;
+}
+.n2-note[data-note-fold='expanded'] > .n2-note__eyebrow {
+  grid-area: 1 / 1;
+}
+.n2-note[data-note-fold='expanded'] > .n2-note__fold {
+  grid-area: 1 / 2;
+  align-self: center;
+  margin: -5px -10px -5px 0;
+}
+.n2-note:hover .n2-note__fold,
+.n2-note--selected .n2-note__fold {
+  color: var(--color-note-text-muted);
+}
+.n2-note .n2-note__fold:hover {
+  color: var(--color-note-text-strong);
+  background: color-mix(in srgb, var(--color-note) 12%, transparent);
+}
+.n2-note__fold-chevron {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: var(--color-note);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.16s;
+}
+.n2-note[data-note-fold='expanded'] .n2-note__fold-chevron {
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .n2-note__fold,
+  .n2-note__fold-chevron {
+    transition: none;
+  }
+}
+.n2-note__content--empty {
+  color: var(--color-note-text-faint);
+  font-style: italic;
+}
+/* Links belong to the paper: amber and underlined, quieter once visited, brighter when pressed. */
+.note-markdown a {
+  color: var(--color-note-link);
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.18em;
+}
+.note-markdown a:visited {
+  color: var(--color-note-link-visited);
+}
+.note-markdown a:hover,
+.note-markdown a:active {
+  color: var(--color-note-link-active);
+  text-decoration-color: currentColor;
+}
+.note-markdown > :first-child {
+  margin-top: 0;
+}
+.note-markdown > :last-child {
+  margin-bottom: 0;
+}
+.note-markdown h1,
+.note-markdown h2,
+.note-markdown h3 {
+  margin: 1em 0 0.35em;
+  color: var(--color-note-text-strong);
+  font-size: 1.05em;
+}
+.note-markdown p,
+.note-markdown ul,
+.note-markdown ol,
+.note-markdown blockquote {
+  margin: 0.55em 0;
+}
+.note-markdown ul,
+.note-markdown ol {
+  padding-left: 1.4em;
+}
+.note-markdown code {
+  padding: 0.08em 0.28em;
+  border-radius: 3px;
+  color: var(--color-note-text-strong);
+  background: color-mix(in srgb, var(--color-shadow) 20%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+.note-markdown__omitted-image {
+  color: var(--color-note-text-faint);
+  font-style: italic;
+}
+.note-markdown blockquote {
+  padding-left: 0.8em;
+  border-left: 2px solid color-mix(in srgb, var(--color-note) 36%, transparent);
+  color: var(--color-note-text-faint);
+}

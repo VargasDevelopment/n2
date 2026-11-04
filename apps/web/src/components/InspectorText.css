@@ -1,0 +1,116 @@
+/* Read-first text in the Inspector: rendered Markdown to read, the source to edit. */
+/* A Note's Edit sits where a description's does, without a heading above the paper; the text
+   wraps around it rather than running under it. */
+.inspector__float {
+  float: right;
+  margin: -3px -8px 0 12px;
+}
+.inspector__float .inspector__action {
+  color: var(--color-note-link);
+}
+
+.inspector__read {
+  cursor: text;
+}
+.inspector__prose {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.inspector__prose pre {
+  max-width: 100%;
+  margin: 0.55em 0;
+  overflow-x: auto;
+  padding: 9px 11px;
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--color-shadow) 22%, transparent);
+  line-height: 1.5;
+}
+.inspector__prose pre code {
+  padding: 0;
+  background: none;
+  overflow-wrap: normal;
+  white-space: pre;
+}
+/* Descriptions use the panel's colors; the shared Markdown rules otherwise speak Note paper. */
+.inspector__prose--description :is(h1, h2, h3, strong) {
+  color: var(--color-text);
+}
+.inspector__prose--description code {
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-contrast) 7%, transparent);
+}
+.inspector__prose--description a,
+.inspector__prose--description a:visited {
+  color: var(--color-link);
+}
+.inspector__prose--description a:hover {
+  color: var(--color-link-hover);
+}
+.inspector__prose--description blockquote {
+  border-left-color: var(--color-border-strong);
+  color: var(--color-text-muted);
+}
+.inspector__prose--note {
+  padding-top: 4px;
+  color: var(--color-note-text-muted);
+}
+.inspector__prose.is-clamped {
+  max-height: calc(1.55em * 9);
+  overflow: hidden;
+  mask-image: linear-gradient(currentColor 70%, transparent);
+}
+.inspector__more,
+.inspector__empty {
+  padding: 2px 0;
+  border: 0;
+  color: var(--color-link);
+  background: transparent;
+  cursor: pointer;
+  font: var(--font-size-small) var(--font-sans);
+}
+.inspector__more {
+  margin-top: 6px;
+}
+.inspector__empty {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+.inspector__text--note .inspector__empty {
+  margin-top: 4px;
+  color: var(--color-note-text-faint);
+}
+.inspector__editor {
+  display: block;
+  width: 100%;
+  min-height: 160px;
+  padding: 10px 11px;
+  resize: vertical;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent);
+  border-radius: var(--radius-control);
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-contrast) 2.5%, transparent);
+  font: var(--font-size-body) / 1.55 var(--font-sans);
+  field-sizing: content;
+}
+.inspector__editor--note {
+  min-height: 220px;
+  color: var(--color-note-text);
+  border-color: color-mix(in srgb, var(--color-note) 48%, transparent);
+  outline-color: color-mix(in srgb, var(--color-note) 12%, transparent);
+  background: color-mix(in srgb, var(--color-note-surface) 22%, transparent);
+  font: var(--font-size-meta) / 1.6 var(--font-mono);
+}
+.inspector__hint {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+}
+.inspector__hint kbd {
+  padding: 0 4px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+  font: var(--font-size-micro) var(--font-mono);
+}

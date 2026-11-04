@@ -1,0 +1,399 @@
+/*
+ * N2 design tokens, in three cascade layers:
+ *   tokens.palette  --palette-<hue>-<lightness>: raw values. The number is CIELAB lightness x 10
+ *                   (0 black, 1000 white), so ramps sort by lightness.
+ *   tokens.semantic --color-*, --gradient-*, --font-*, --radius-* roles built from the palette. Core
+ *                   surfaces, text, accent, and feedback come first, then the domain vocabulary
+ *                   from CONTEXT.md, then type and shape.
+ *   tokens.derived  roles built from other roles (aliases and color-mix).
+ *
+ * pnpm code-health enforces exactly these rules:
+ *   - Raw colors (hex, color functions, named colors) appear only in tokens.palette; no other web
+ *     stylesheet or TS string contains one. CSS sets color-scheme only to var(--color-scheme), and TS
+ *     never sets it.
+ *   - --palette-*, --color-*, --gradient-*, --font-*, and --radius-* are declared only in this file,
+ *     each inside a tokens.* layer, and --palette-* names only in tokens.palette. The one exception
+ *     is themes.css, which may only re-declare tokens.semantic roles from here.
+ *   - tokens.palette reads nothing, tokens.semantic reads palette and semantic, and tokens.derived
+ *     reads semantic and derived, so no chain of references loops across layers. Palette tokens are
+ *     never read outside this file and themes.css.
+ *   - Every token declared here is referenced, and every reference in those namespaces resolves to a
+ *     token declared here.
+ *
+ * Conventions: translucency is applied where a role is used, with
+ * color-mix(in srgb, var(--role) N%, transparent), so one role serves every alpha. Borders and hover
+ * washes mix --color-contrast, so a light theme flips them by redefining that one role; border
+ * strength is semantic so each Theme can tune it. Status is carried by shape before color (see
+ * .status-dot in styles.css), so a monochrome theme stays readable. Themes: the semantic block below is Midnight, the default; each other built-in Theme is
+ * one tokens.semantic block in themes.css, and the derived layer follows it. Their raw values live
+ * in the palette here, and src/theme.ts keeps <meta name="theme-color"> in step with --color-bg.
+ * Stacking (--z-*): passive notifications never sit above an interactive surface the user opened,
+ * so --z-toast is below every panel, control, and modal. The update banner is the one exception.
+ */
+@layer tokens.palette, tokens.semantic, tokens.derived;
+
+@layer tokens.palette {
+  :root {
+    /* Cool neutrals: the ink surfaces, then the text ladder. */
+    --palette-gray-0: #000000;
+    --palette-gray-14: #040508;
+    --palette-gray-27: #090a0d;
+    --palette-gray-37: #0c0d12;
+    --palette-gray-48: #0f1015;
+    --palette-gray-56: #111219;
+    --palette-gray-84: #17181f;
+    --palette-gray-95: #191a22;
+    --palette-gray-115: #1d1e26;
+    --palette-gray-125: #1f2029;
+    --palette-gray-231: #343741;
+    --palette-gray-434: #636674;
+    --palette-gray-585: #8a8c99;
+    --palette-gray-741: #b6b5c1;
+    --palette-gray-930: #ecebe6;
+    --palette-gray-955: #f4f2ec;
+    --palette-gray-1000: #ffffff;
+    --palette-violet-64: #14131d;
+    --palette-violet-107: #1d1b2b;
+    --palette-violet-132: #231f35;
+    --palette-violet-157: #292245;
+    --palette-violet-407: #615c7e;
+    --palette-violet-436: #68647f;
+    --palette-violet-489: #7569bc;
+    --palette-violet-498: #7562e6;
+    --palette-violet-569: #8983b4;
+    --palette-violet-610: #9282ff;
+    --palette-violet-695: #aaa5d0;
+    --palette-violet-722: #b2a6ff;
+    --palette-violet-749: #b9afff;
+    --palette-violet-907: #e6e1ff;
+    --palette-cyan-799: #5cd7e5;
+    --palette-red-114: #2e181d;
+    --palette-red-450: #c43440;
+    --palette-red-504: #d8404b;
+    --palette-red-677: #ff7d84;
+    --palette-red-741: #ff9a9f;
+    --palette-red-857: #ffc9cc;
+    --palette-green-71: #101716;
+    --palette-green-779: #67d5a2;
+    --palette-amber-89: #1c1914;
+    --palette-amber-170: #312919;
+    --palette-amber-199: #382f1e;
+    --palette-amber-343: #704819;
+    --palette-amber-575: #99886a;
+    --palette-amber-769: #deb96f;
+    --palette-amber-773: #c9bea7;
+    --palette-amber-774: #d9bb8e;
+    --palette-amber-791: #ffb560;
+    --palette-amber-890: #e8dfca;
+    --palette-amber-929: #f3ead6;
+    --palette-amber-969: #fbf6e8;
+    /* Built-in Themes (themes.css). */
+    --palette-amber-133: #28211a;
+    --palette-amber-134: #2b2016;
+    --palette-amber-138: #2b2210;
+    --palette-amber-169: #35271a;
+    --palette-amber-185: #3a2a1b;
+    --palette-amber-200: #3a2f18;
+    --palette-amber-207: #3a3027;
+    --palette-amber-284: #4a4236;
+    --palette-amber-294: #5a4114;
+    --palette-amber-389: #8a4c0b;
+    --palette-amber-391: #6b5a37;
+    --palette-amber-397: #6e5a45;
+    --palette-amber-440: #7a6450;
+    --palette-amber-448: #75685a;
+    --palette-amber-506: #8a7650;
+    --palette-amber-513: #b8650f;
+    --palette-amber-528: #a8741c;
+    --palette-amber-595: #a88a6c;
+    --palette-amber-603: #a08f79;
+    --palette-amber-620: #c48a4a;
+    --palette-amber-624: #d9822b;
+    --palette-amber-713: #c9a988;
+    --palette-amber-723: #f0a04b;
+    --palette-amber-739: #bdb5a5;
+    --palette-amber-759: #c9b9a3;
+    --palette-amber-795: #e0c09a;
+    --palette-amber-804: #f6bd7a;
+    --palette-amber-808: #e8c47e;
+    --palette-amber-816: #f5c451;
+    --palette-amber-904: #e8e3d9;
+    --palette-amber-910: #f6e3c4;
+    --palette-amber-911: #f3e4c2;
+    --palette-amber-913: #efe5d6;
+    --palette-amber-914: #ebe6dc;
+    --palette-amber-916: #fde3c2;
+    --palette-amber-920: #f5e7c8;
+    --palette-amber-948: #f7efe4;
+    --palette-amber-954: #fbf1da;
+    --palette-amber-967: #fff4e6;
+    --palette-amber-976: #fff7ee;
+    --palette-gray-15: #050505;
+    --palette-gray-28: #0a0a0a;
+    --palette-gray-43: #0f0f0f;
+    --palette-gray-51: #111111;
+    --palette-gray-63: #141414;
+    --palette-gray-93: #1a1a1a;
+    --palette-gray-103: #1c1c1c;
+    --palette-gray-118: #1f1f1f;
+    --palette-gray-212: #333333;
+    --palette-gray-349: #525252;
+    --palette-gray-391: #5c5c5c;
+    --palette-gray-555: #858585;
+    --palette-gray-594: #8f8f8f;
+    --palette-gray-670: #a3a3a3;
+    --palette-gray-766: #bdbdbd;
+    --palette-gray-802: #c7c7c7;
+    --palette-gray-892: #e0e0e0;
+    --palette-gray-948: #f0f0f0;
+    --palette-green-448: #18794e;
+    --palette-green-780: #8fd18a;
+    --palette-red-104: #2e1517;
+    --palette-red-315: #8f1d28;
+    --palette-red-360: #a3202c;
+    --palette-red-422: #b8303b;
+    --palette-red-425: #b8323f;
+    --palette-red-444: #c42f3b;
+    --palette-red-554: #e0593a;
+    --palette-red-584: #e2646d;
+    --palette-red-650: #ff6f7d;
+    --palette-red-742: #ff9aa3;
+    --palette-red-852: #ffc7cc;
+    --palette-red-922: #f9e4e3;
+    --palette-sage-156: #1d2a21;
+    --palette-sage-188: #233127;
+    --palette-sage-589: #7a9481;
+    --palette-sage-761: #a9c2ae;
+    --palette-sage-764: #9cc7a4;
+    --palette-sage-904: #d6e8da;
+    --palette-sage-943: #e4f2ea;
+    --palette-sand-67: #15141b;
+    --palette-sand-104: #1d1b26;
+    --palette-sand-133: #23212b;
+    --palette-sand-932: #efebe3;
+    --palette-sand-952: #f4f1ea;
+    --palette-sand-960: #f7f3ec;
+    --palette-sand-966: #f8f5ef;
+    --palette-sand-980: #fbf9f5;
+    --palette-teal-484: #0b7f8c;
+    --palette-teal-756: #7fc8b8;
+    --palette-umber-15: #070504;
+    --palette-umber-35: #0f0c0a;
+    --palette-umber-45: #120f0c;
+    --palette-umber-62: #17130f;
+    --palette-umber-73: #1b1510;
+    --palette-umber-83: #131a12;
+    --palette-umber-92: #1e1914;
+    --palette-umber-93: #141c16;
+    --palette-umber-98: #201a15;
+    --palette-umber-108: #221c16;
+    --palette-umber-964: #eef7ef;
+    --palette-violet-161: #2a2440;
+    --palette-violet-209: #2e2180;
+    --palette-violet-310: #4a4757;
+    --palette-violet-336: #4a35c0;
+    --palette-violet-337: #4e4787;
+    --palette-violet-344: #4b37c4;
+    --palette-violet-401: #5b45d6;
+    --palette-violet-411: #625f6e;
+    --palette-violet-445: #6a6396;
+    --palette-violet-467: #6f61c2;
+    --palette-violet-518: #7c76a6;
+    --palette-violet-566: #8a8693;
+    --palette-violet-678: #a7a2bd;
+    --palette-violet-745: #b9b3d6;
+    --palette-violet-897: #e5def7;
+    --palette-violet-924: #ebe7f8;
+    --palette-violet-933: #efe9fd;
+    --palette-violet-935: #efeafc;
+  }
+}
+
+@layer tokens.semantic {
+  /* Midnight, the default Theme. themes.css holds the others. */
+  :root,
+  [data-theme='midnight'] {
+    /* Surfaces and canvas, darkest to lightest */
+    --color-contrast: var(--palette-gray-1000);
+    --color-shadow: var(--palette-gray-0);
+    --color-backdrop: var(--palette-gray-14);
+    --color-bg: var(--palette-gray-27);
+    --color-bg-canvas: var(--palette-gray-37);
+    --color-surface: var(--palette-gray-56);
+    --color-surface-raised: var(--palette-gray-84);
+    --color-surface-hover: var(--palette-gray-125);
+    --color-surface-tinted: var(--palette-violet-107);
+    --color-canvas-dots: var(--palette-gray-231);
+    /* Hairlines mix --color-contrast; a Theme tunes the strength to its surfaces. */
+    --color-border: color-mix(in srgb, var(--color-contrast) 9%, transparent);
+    --color-border-strong: color-mix(in srgb, var(--color-contrast) 12%, transparent);
+
+    /* Text: four steps plus one for titles. Anything quieter than faint is decoration, not text. */
+    --color-text-strong: var(--palette-gray-955);
+    --color-text: var(--palette-gray-930);
+    --color-text-secondary: var(--palette-gray-741);
+    --color-text-muted: var(--palette-gray-585);
+    --color-text-faint: var(--palette-gray-434);
+
+    /* Accent: a fill, a mark, and text that sits on either */
+    --color-accent: var(--palette-violet-610);
+    --color-accent-deep: var(--palette-violet-498);
+    --color-accent-text: var(--palette-violet-722);
+    --color-accent-text-strong: var(--palette-violet-907);
+    --color-accent-secondary: var(--palette-cyan-799);
+
+    /* Feedback */
+    --color-danger: var(--palette-red-677);
+    /* A solid fill and the text on it: keep the pair at 4.5:1 or better. */
+    --color-danger-solid: var(--palette-red-450);
+    --color-text-on-danger: var(--color-text-strong);
+    --color-danger-emphasis: var(--palette-red-741);
+    --color-danger-text: var(--palette-red-857);
+    --color-danger-surface: var(--palette-red-114);
+    --color-success: var(--palette-green-779);
+    --color-success-surface: var(--palette-green-71);
+    --color-warning: var(--palette-amber-791);
+    --color-warning-text: var(--palette-amber-774);
+    --color-warning-surface: var(--palette-amber-343);
+
+    /* Domain: canvas item kinds (Task and Group use the core surfaces; Notes are warm paper) */
+    --color-note: var(--palette-amber-769);
+    --color-note-surface: var(--palette-amber-170);
+    --color-note-text-strong: var(--palette-amber-929);
+    --color-note-text: var(--palette-amber-890);
+    --color-note-text-muted: var(--palette-amber-773);
+    --color-note-text-faint: var(--palette-amber-575);
+
+    /* Domain: relationships (member_of, depends_on); blocking reuses the blocked status */
+    --color-relationship-member-of: var(--palette-violet-436);
+    --color-relationship-depends-on: var(--palette-violet-569);
+    --color-relationship-member-of-emphasis: var(--palette-violet-695);
+    --color-relationship-depends-on-emphasis: var(--palette-violet-749);
+
+    /* Domain: Group regions, the canvas presentation of Member of (ADR 0016). The fill role is
+       mixed thin where it is used; the edge and emphasis roles keep contrast floors against the
+       canvas, checked in themes.test.ts. */
+    --color-group-region: var(--palette-violet-436);
+    --color-group-region-edge: var(--palette-violet-310);
+    --color-group-region-emphasis: var(--palette-violet-569);
+
+    /* Domain: Planning Placement */
+    --color-planning-placement: var(--palette-violet-407);
+    --color-milestone: var(--palette-violet-489);
+
+    /* Gradients */
+    --gradient-brand: linear-gradient(
+      135deg,
+      var(--palette-amber-969) 20%,
+      var(--palette-violet-610) 56%,
+      var(--palette-cyan-799)
+    );
+    --gradient-progress-blocked: linear-gradient(
+      90deg,
+      var(--palette-red-504),
+      var(--palette-red-741)
+    );
+    --gradient-node-task: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--palette-gray-115) 98%, transparent),
+      color-mix(in srgb, var(--palette-gray-56) 98%, transparent)
+    );
+    --gradient-node-group: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--palette-violet-157) 98%, transparent),
+      color-mix(in srgb, var(--palette-violet-64) 98%, transparent)
+    );
+    --gradient-note: linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--palette-amber-199) 98%, transparent),
+      color-mix(in srgb, var(--palette-amber-89) 99%, transparent)
+    );
+    --gradient-project-card: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--palette-gray-95) 94%, transparent),
+      color-mix(in srgb, var(--palette-gray-48) 94%, transparent)
+    );
+    --gradient-project-card-active: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--palette-violet-132) 96%, transparent),
+      color-mix(in srgb, var(--palette-gray-56) 96%, transparent)
+    );
+
+    /* Native controls */
+    --color-scheme: dark;
+
+    /*
+     * Type: one sans for reading, one mono for references and data, and Syne only for the wordmark
+     * and page-level headlines. The scale steps by roughly a minor third above body size; micro is
+     * the floor for any text, mono labels included.
+     */
+    --font-sans: 'Source Sans 3 Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'DM Mono', ui-monospace, monospace;
+    --font-display: 'Syne Variable', var(--font-sans);
+    --font-size-micro: 10px;
+    --font-size-meta: 11px;
+    --font-size-small: 12px;
+    --font-size-body: 13px;
+    --font-size-title: 15px;
+    --font-size-heading: 18px;
+    --font-size-section: 24px;
+    --font-size-display: 32px;
+    --font-size-hero: clamp(40px, 5vw, 56px);
+
+    /* Shape: radius grows with containment, so nesting reads at a glance. */
+    --radius-control: 8px;
+    --radius-card: 12px;
+    --radius-panel: 16px;
+    --radius-sheet: 22px;
+    --radius-pill: 999px;
+
+    /*
+     * Stacking, lowest first. Toasts are passive, so they sit just above the canvas and below every
+     * interactive surface; popovers inherit their control's layer. The confirm dialog uses the
+     * native top layer. Orderings inside a single component stay local and do not use this scale.
+     * The update banner sits above every layer here: a tab running old code has no other way out, so
+     * its Reload must stay reachable (ADR 0020). Only the confirm dialog, which needs an answer
+     * first, covers it.
+     */
+    --z-canvas-hint: 6;
+    --z-toast: 8;
+    --z-topbar: 10;
+    --z-panel: 12;
+    --z-canvas-controls: 14;
+    --z-modal: 40;
+    --z-update: 50;
+  }
+}
+
+@layer tokens.derived {
+  /* Recomputed under every data-theme so a re-themed subtree derives from its own roles. */
+  :root,
+  [data-theme] {
+    /* Surfaces */
+    --color-minimap-mask: color-mix(in srgb, var(--color-bg) 78%, transparent);
+    --color-text-on-accent: var(--color-surface);
+    --color-focus: var(--color-accent-secondary);
+    --color-link: var(--color-accent-text);
+    --color-link-hover: var(--color-accent-text-strong);
+    --gradient-progress: linear-gradient(90deg, var(--color-accent), var(--color-accent-secondary));
+
+    /* Domain: effective status (ready, in_progress, blocked, done) */
+    --color-status-ready: var(--color-text-muted);
+    --color-status-in-progress: var(--color-accent);
+    --color-status-blocked: var(--color-danger);
+    --color-status-done: var(--color-success);
+
+    /* Domain: relationships and handles */
+    --color-relationship-blocking: var(--color-status-blocked);
+    --color-relationship-blocking-emphasis: var(--color-danger-emphasis);
+    --color-relationship-selected: var(--color-accent-text);
+    --color-relationship-label: var(--color-text-secondary);
+    --color-handle: var(--color-accent);
+    --color-handle-border: var(--color-surface-hover);
+
+    /* Domain: Note links read as part of the paper, not as browser defaults */
+    --color-note-link: var(--color-note);
+    --color-note-link-visited: var(--color-note-text-muted);
+    --color-note-link-active: var(--color-note-text-strong);
+  }
+}

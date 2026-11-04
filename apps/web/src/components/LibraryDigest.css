@@ -1,0 +1,185 @@
+/* The Library digest: which Projects changed since the Person last looked, and by whom. */
+.library-digest {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+.library-digest__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 4px 4px;
+}
+/* Set like the Activity sheet's "New since you last looked" divider, so the two read as one idea. */
+.library-digest__header h2 {
+  margin: 0;
+  color: var(--color-accent-text);
+  font: 400 var(--font-size-micro) var(--font-mono);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.library-digest__rule {
+  flex: 1;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+.library-digest__feed {
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-link);
+  background: transparent;
+  cursor: pointer;
+  font: var(--font-size-meta) var(--font-mono);
+  white-space: nowrap;
+}
+.library-digest__feed:hover,
+.library-digest__feed[aria-pressed='true'] {
+  color: var(--color-link-hover);
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-contrast) 4%, transparent);
+}
+.library-digest__rows {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.library-digest[inert] {
+  opacity: 0.52;
+}
+
+/* One Project with new activity: a slim row carrying the same accent rail as a new Activity Run. */
+.library-digest__row {
+  --digest-mark: var(--color-text-muted);
+  position: relative;
+  display: grid;
+  grid-template-columns: 9px auto minmax(0, max-content) minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  column-gap: 12px;
+  width: 100%;
+  padding: 13px 16px 13px 18px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 34%, transparent);
+  border-radius: var(--radius-card);
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-surface-tinted) 80%, transparent);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 140ms,
+    background 140ms;
+}
+.library-digest__row::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: -1px;
+  width: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 70%, transparent);
+}
+.library-digest__row:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+  background: var(--color-surface-tinted);
+}
+.library-digest__row:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+  outline-offset: 2px;
+}
+.library-digest__row--agent {
+  --digest-mark: var(--color-accent-secondary);
+}
+/* The latest actor's mark, as in the Activity sheet: a diamond for an Agent, dashed when unknown. */
+.library-digest__mark {
+  align-self: center;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--digest-mark);
+  transform: rotate(45deg);
+}
+.library-digest__row--unknown .library-digest__mark {
+  border: 1.5px dashed var(--digest-mark);
+  border-radius: 50%;
+  background: transparent;
+  transform: none;
+}
+.library-digest__key,
+.library-digest__who,
+.library-digest__when,
+.library-digest__open {
+  font: var(--font-size-meta) var(--font-mono);
+  white-space: nowrap;
+}
+.library-digest__key {
+  color: var(--color-link);
+  letter-spacing: 0.08em;
+}
+.library-digest__name {
+  overflow: hidden;
+  color: var(--color-text-strong);
+  font: 600 var(--font-size-body) var(--font-sans);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.library-digest__who {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+}
+.library-digest__when {
+  color: var(--color-text-faint);
+}
+.library-digest__open {
+  color: var(--color-text-muted);
+  transition: color 140ms;
+}
+.library-digest__row:hover .library-digest__open {
+  color: var(--color-accent-text);
+}
+
+/* Nothing new: one quiet line, without the rail, that still says the Person is up to date. */
+.library-digest__caught-up {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 12px 16px 12px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+}
+.library-digest__caught-up-mark {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 50%;
+}
+
+/* Narrow Libraries drop the time and wrap who changed it below the Project's name. */
+@media (max-width: 680px) {
+  .library-digest__row {
+    grid-template-columns: 9px auto minmax(0, 1fr) auto;
+    row-gap: 4px;
+  }
+  .library-digest__who {
+    grid-column: 2 / -1;
+    grid-row: 2;
+  }
+  .library-digest__when {
+    display: none;
+  }
+  .library-digest__open {
+    font-size: 0;
+  }
+  .library-digest__open span {
+    font-size: var(--font-size-meta);
+  }
+}

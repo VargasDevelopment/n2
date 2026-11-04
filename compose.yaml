@@ -1,0 +1,38 @@
+# Run N2 on your own machine. See docs/install.md.
+#   docker compose up -d --build
+# The library lives in the `n2-data` volume. The port is published on this machine only.
+name: n2
+services:
+  n2:
+    build:
+      context: .
+      args:
+        N2_BUILD_COMMIT: ${N2_BUILD_COMMIT:-local}
+    command: [node, dist/selfhost.js]
+    environment:
+      N2_DB_PATH: /data/n2.sqlite
+      N2_BACKUP_DIR: /data/backups
+      N2_HOST: 0.0.0.0
+      N2_ALLOWED_HOSTS: ${N2_ALLOWED_HOSTS:-}
+    ports:
+      - '127.0.0.1:${N2_PORT:-4317}:4317'
+    volumes:
+      - n2-data:/data
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+    healthcheck:
+      test:
+        [
+          CMD,
+          node,
+          -e,
+          "fetch('http://127.0.0.1:4317/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+        ]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  n2-data:

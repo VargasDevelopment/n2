@@ -1,0 +1,118 @@
+/* The dialog element itself is only the hit area; clicks that land on it are backdrop clicks. */
+.confirm-dialog {
+  width: min(440px, calc(100vw - 32px));
+  max-width: none;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  color: var(--color-text-secondary);
+  background: transparent;
+}
+.confirm-dialog::backdrop {
+  /* Light enough that the selection being confirmed stays recognizable behind the dialog. */
+  background: color-mix(in srgb, var(--color-backdrop) 62%, transparent);
+  backdrop-filter: blur(3px);
+  animation: confirm-backdrop-enter 150ms ease-out;
+}
+
+.confirm-dialog__panel {
+  display: grid;
+  gap: 16px;
+  padding: 24px 24px 20px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  box-shadow: 0 32px 100px color-mix(in srgb, var(--color-shadow) 62%, transparent);
+  font-family: var(--font-sans);
+  animation: confirm-panel-enter 170ms ease-out;
+}
+.confirm-dialog--destructive .confirm-dialog__panel {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--color-danger) 8%, transparent),
+      transparent 45%
+    ),
+    var(--color-surface);
+}
+
+.confirm-dialog h2 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: var(--font-size-heading);
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.confirm-dialog__body {
+  display: grid;
+  gap: 12px;
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+.confirm-dialog__body p {
+  margin: 0;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+.confirm-dialog__actions button {
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  background: color-mix(in srgb, var(--color-contrast) 3%, transparent);
+  cursor: pointer;
+  font-size: var(--font-size-body);
+}
+.confirm-dialog__actions button:hover {
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-contrast) 7%, transparent);
+}
+.confirm-dialog__actions .confirm-dialog__primary {
+  border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  color: var(--color-accent-text-strong);
+  background: color-mix(in srgb, var(--color-accent-deep) 18%, transparent);
+}
+.confirm-dialog__actions .confirm-dialog__primary:hover {
+  background: color-mix(in srgb, var(--color-accent-deep) 28%, transparent);
+}
+/* A destructive confirm is the one solid button in the app, so it cannot be mistaken for Cancel. */
+.confirm-dialog--destructive .confirm-dialog__actions .confirm-dialog__primary {
+  border-color: transparent;
+  color: var(--color-text-on-danger);
+  background: var(--color-danger-solid);
+  font-weight: 600;
+}
+.confirm-dialog--destructive .confirm-dialog__actions .confirm-dialog__primary:hover {
+  color: var(--color-text-on-danger);
+  /* Hover darkens rather than lightens, so the text contrast never drops below the rest state. */
+  background: color-mix(in srgb, var(--color-danger-solid) 86%, var(--color-shadow));
+}
+.confirm-dialog--destructive .confirm-dialog__primary:focus-visible {
+  outline-color: var(--color-danger);
+}
+
+@keyframes confirm-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes confirm-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confirm-dialog::backdrop,
+  .confirm-dialog__panel {
+    animation: none;
+  }
+}

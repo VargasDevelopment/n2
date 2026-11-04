@@ -1,0 +1,258 @@
+/* Inspector appearance; placement and size limits live in CanvasOverlays.css. */
+.inspector {
+  --inspector-pad: 20px;
+  z-index: var(--z-panel);
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid color-mix(in srgb, var(--color-contrast) 11%, transparent);
+  border-radius: var(--radius-panel);
+  background: color-mix(in srgb, var(--color-surface) 97%, transparent);
+  box-shadow: 0 24px 70px color-mix(in srgb, var(--color-shadow) 46%, transparent);
+  backdrop-filter: blur(20px);
+  animation: var(--overlay-inspector-enter) 0.18s ease-out;
+}
+/* A face too tall to leave the body room scrolls away with it, as in a band. */
+.inspector.is-crowded {
+  display: block;
+}
+.inspector--note {
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--color-note-surface) 30%, var(--color-surface)) 97%,
+    transparent
+  );
+}
+/* Only the body scrolls, so the face, with its close control, stays in view. Nothing in it may
+   widen the panel: long words wrap and code blocks scroll inside themselves. */
+.inspector__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* ---------- Sections: one rhythm for every kind ---------- */
+.inspector__section {
+  padding: 16px var(--inspector-pad);
+  border-top: 1px solid var(--color-border);
+}
+.inspector__section:first-child {
+  border-top: 0;
+}
+.inspector__section--tight {
+  padding-block: 14px;
+}
+.inspector--note .inspector__section,
+.inspector--note .inspector__footer {
+  border-top-color: color-mix(in srgb, var(--color-note) 16%, transparent);
+}
+.inspector__section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 22px;
+  margin-bottom: 8px;
+}
+.inspector__label {
+  margin: 0;
+  color: var(--color-text-muted);
+  font: 400 var(--font-size-micro) var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.inspector__label span {
+  margin-left: 4px;
+  color: var(--color-text-faint);
+}
+.inspector__section--tight > .inspector__label {
+  margin-bottom: 8px;
+}
+.inspector__action {
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-link);
+  background: transparent;
+  cursor: pointer;
+  font: var(--font-size-small) var(--font-sans);
+}
+.inspector__action:hover {
+  color: var(--color-link-hover);
+}
+.inspector__action.is-on {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+  background: var(--color-surface-hover);
+}
+/* ---------- Choice rows: requested status and planning placement ---------- */
+.inspector__choices {
+  display: grid;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--color-contrast) 2%, transparent);
+}
+.inspector__choices button {
+  padding: 6px 4px;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-control) - 2px);
+  color: var(--color-text-muted);
+  background: transparent;
+  cursor: pointer;
+  font: var(--font-size-small) var(--font-sans);
+}
+.inspector__choices button:hover {
+  color: var(--color-text);
+}
+.inspector__choices button.is-active {
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+}
+/* Requested status: one row of four, each with its status dot. */
+.inspector__status-row {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.inspector__status-row button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 7px 4px;
+  white-space: nowrap;
+}
+
+/* ---------- Planning ---------- */
+.inspector__when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-size-body);
+}
+.inspector__when-kind {
+  color: var(--color-text-muted);
+  font: var(--font-size-meta) var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Agents ---------- */
+.inspector__agents > .inspector__label {
+  margin-bottom: 8px;
+}
+.inspector__agents p {
+  margin: 0 0 10px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  line-height: 1.45;
+}
+.inspector__agents p.is-warning {
+  color: var(--color-warning-text);
+}
+.inspector__agents .inspector__attempt-state {
+  color: var(--color-accent-text-strong);
+}
+.inspector__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.inspector__button {
+  padding: 7px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-contrast) 4%, transparent);
+  cursor: pointer;
+  font: var(--font-size-small) var(--font-sans);
+}
+.inspector__button--primary {
+  border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  color: var(--color-accent-text-strong);
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+}
+.inspector__button--quiet {
+  border-color: transparent;
+  color: var(--color-text-muted);
+  background: transparent;
+}
+.inspector__button:hover:not(:disabled) {
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+.inspector__button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.inspector__agent-preview {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--color-contrast) 2.5%, transparent);
+}
+.inspector__agent-preview ul {
+  max-height: 140px;
+  margin: 0 0 10px;
+  padding-left: 18px;
+  overflow: auto;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+/* ---------- Footer: one destructive action, named by kind ---------- */
+.inspector__footer {
+  padding: 12px var(--inspector-pad) 16px;
+  border-top: 1px solid var(--color-border);
+}
+.inspector__delete {
+  margin-left: -8px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-danger);
+  background: transparent;
+  cursor: pointer;
+  font: var(--font-size-small) var(--font-sans);
+}
+.inspector__delete:hover {
+  border-color: color-mix(in srgb, var(--color-danger) 50%, transparent);
+  color: var(--color-danger-text);
+  background: color-mix(in srgb, var(--color-danger) 7%, transparent);
+}
+
+@keyframes inspector-enter {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+@keyframes inspector-enter-left {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+}
+@keyframes inspector-enter-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes inspector-enter-top {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .inspector {
+    animation: none;
+  }
+}

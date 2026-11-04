@@ -1,0 +1,111 @@
+.inspector-relationships {
+  display: grid;
+  gap: 12px;
+}
+.inspector-relationships .inspector__label {
+  margin-bottom: 6px;
+}
+.inspector-relationships ul {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  margin: 0 -9px;
+  padding: 0;
+  list-style: none;
+}
+.inspector-relationships__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+}
+.inspector-relationships__item {
+  display: grid;
+  grid-template-columns: 8px auto minmax(0, 1fr) auto;
+  flex: 1;
+  min-width: 0;
+  align-items: start;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  background: transparent;
+  cursor: pointer;
+  font-size: var(--font-size-body);
+  line-height: 1.35;
+  text-align: left;
+}
+.inspector-relationships__row--blocking .inspector-relationships__item {
+  background: color-mix(in srgb, var(--color-status-blocked) 6%, transparent);
+}
+.inspector-relationships__item:hover:not(:disabled) {
+  color: var(--color-text);
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-contrast) 4.5%, transparent);
+}
+.inspector-relationships__item:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.inspector-relationships__item .status-dot {
+  margin-top: 5px;
+}
+.inspector-relationships__reference {
+  padding-top: 1px;
+  color: var(--color-accent-text);
+  font: var(--font-size-meta) var(--font-mono);
+  letter-spacing: 0.04em;
+}
+/* Full titles, up to two lines; the glyph carries the status, so the title gets the room. */
+.inspector-relationships__title {
+  display: -webkit-box;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.inspector-relationships__tag {
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  color: var(--color-danger-text);
+  background: var(--color-danger-surface);
+  font: var(--font-size-micro) / 1.6 var(--font-mono);
+  letter-spacing: 0.04em;
+}
+.inspector-relationships__more {
+  margin: 4px 0 0;
+  padding: 2px 0;
+  border: 0;
+  color: var(--color-link);
+  background: transparent;
+  cursor: pointer;
+  font: var(--font-size-small) var(--font-sans);
+}
+.inspector-relationships__more:hover {
+  color: var(--color-link-hover);
+}
+/* Always shown, quietly: with Part of lines hidden on the canvas, this is where they are removed. */
+.inspector-relationships__remove {
+  flex: none;
+  width: 26px;
+  margin-top: 3px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-text-faint);
+  background: transparent;
+  cursor: pointer;
+  font-size: var(--font-size-body);
+  line-height: 1;
+}
+.inspector-relationships__row:hover .inspector-relationships__remove {
+  color: var(--color-text-muted);
+}
+.inspector-relationships__remove:hover,
+.inspector-relationships__remove:focus-visible {
+  border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+  color: var(--color-danger-text);
+  background: var(--color-danger-surface);
+}
