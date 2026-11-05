@@ -64,3 +64,18 @@ pnpm code-health:update
 pnpm test:code-health
 pnpm code-health
 ```
+
+## README screenshots
+
+The images in [docs/images](docs/images/) are generated. After a visible interface change, run:
+
+```bash
+pnpm exec playwright install chromium   # once
+pnpm screenshots
+```
+
+It builds the web interface and server, starts the self-host server on a new library in a
+temporary directory and on a free port, adds a demo Project through the same commands the CLI
+uses, and captures each shot with Playwright. Then it stops the server and deletes the library. It
+never touches your own library. The demo Project and the list of shots are in
+[scripts/screenshots](scripts/screenshots/). Pass `--skip-build` to reuse the current build.

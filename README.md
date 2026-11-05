@@ -5,7 +5,10 @@ canvas as Tasks, Groups and Notes, and connect them. N2 works out status and pro
 connections. People and AI agents change the same data through the same typed commands, using
 either the web interface or a JSON command-line tool.
 
-<!-- Screenshot placeholder: add an image of the canvas here. -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/canvas-midnight.webp">
+  <img src="docs/images/canvas-paper.webp" alt="The N2 canvas for a small app launch. Design, Build and Launch are Groups drawn as shaded regions around their Tasks, with progress bars. Arrows show which Tasks depend on which. Submit to the App Store is blocked because the Task it depends on, Get the developer account approved, is blocked.">
+</picture>
 
 **Status:** a personal tool, shared as-is. It is built for its author's own use. There is no
 support, no roadmap promise and no compatibility promise. Issues and pull requests are welcome,
@@ -29,6 +32,56 @@ but they may not get a response.
 - **Local data.** Everything is stored in one SQLite file. There is a backup command that writes
   a verified snapshot.
 - **Themes.** A few built-in themes, set for the whole app or pinned to one Project.
+
+## A closer look
+
+Select a Task to see why it is blocked. The details panel names the Task that blocks it, and the
+canvas shows the same chain.
+
+<img src="docs/images/inspector-blocked.webp" alt="The details panel for Submit to the App Store. Its status is Blocked, by SPR-13 Get the developer account approved. It depends on three Tasks, and only that one is marked Blocking. Beside the panel, the canvas shows the Launch Group and arrows from Submit to the App Store to the Tasks it depends on.">
+
+Kanban arranges the same work by status, without changing your saved Freeform layout.
+
+<img src="docs/images/kanban.webp" alt="The Kanban view of the same Project, with columns for Ready, In progress, Blocked and Done work. The Blocked column holds the Launch Group, Get the developer account approved and Submit to the App Store.">
+
+## Agents use the same commands
+
+The CLI reads and changes the same Projects with JSON. Here an agent asks why the Task above is
+blocked (output trimmed):
+
+```text
+$ pnpm --silent n2 node explain SPR-17 --project <project-id> --pretty
+{
+  "node": {
+    "reference": "SPR-17",
+    "title": "Submit to the App Store",
+    "requestedStatus": "ready",
+    "effectiveStatus": "blocked",
+    ...
+  },
+  "status": {
+    "requested": "ready",
+    "effective": "blocked",
+    "basis": "blocking_relationships",
+    "blockers": [
+      {
+        "kind": "blocked_dependency",
+        "node": {
+          "reference": "SPR-13",
+          "title": "Get the developer account approved",
+          "requestedStatus": "blocked",
+          "effectiveStatus": "blocked",
+          ...
+        }
+      }
+    ]
+  },
+  ...
+}
+```
+
+The screenshots and this output come from a demo Project. `pnpm screenshots` regenerates the
+images; see [CONTRIBUTING.md](CONTRIBUTING.md#readme-screenshots).
 
 ## Quick start
 

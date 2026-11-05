@@ -21,12 +21,15 @@
     "test": "pnpm -r --if-present test",
     "test:code-health": "node --import tsx --test scripts/code-health/*.tests.ts",
     "typecheck": "tsc -p scripts/tsconfig.json && pnpm -r --if-present typecheck",
+    "screenshots": "tsx scripts/screenshots/index.ts",
     "licenses:generate": "tsx scripts/licenses/index.ts --write",
     "licenses:check": "tsx scripts/licenses/index.ts",
     "test:licenses": "node --import tsx --test scripts/licenses/*.tests.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@n2/client": "workspace:*",
+    "@n2/contracts": "workspace:*",
     "@types/node": "^26.2.0",
     "@types/semver": "^7.8.0",
     "@typescript-eslint/utils": "^8.67.0",
@@ -35,6 +38,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "~0.5.4",
     "globals": "^17.11.0",
+    "playwright": "^1.64.1",
     "prettier": "3.9.6",
     "remark-parse": "^11.0.0",
     "semver": "^7.8.5",
